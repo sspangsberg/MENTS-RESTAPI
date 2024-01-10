@@ -1,0 +1,5 @@
+node_modules
+mongo-volume
+
+.env
+package-lock.json
