@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const productRoutes = require("./routes/product");
+const userRoutes = require("./routes/auth");
 const app = express();
 
 require("dotenv-flow").config();
@@ -25,7 +26,7 @@ app.get("/api/welcome", (req, res) => {
 })
 
 app.use("/api/products", productRoutes);
-
+app.use("/api/user", userRoutes);
 
 
 const PORT = process.env.PORT || 4000;
