@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const product = require("../models/product");
+const { verifyToken } = require("../validation");
 
 // CRUD operations
-
 // Create product - post
-router.post("/", (req, res) => {
+router.post("/", verifyToken, (req, res) => {
     let data = req.body;
 
     product.insertMany(data)
@@ -41,7 +41,7 @@ router.get("/:id", (req, res) => {
 
 
 // Update specific product - put
-router.put("/:id", (req, res) => {
+router.put("/:id", verifyToken, (req, res) => {
 
     const id = req.params.id;
 
@@ -59,7 +59,7 @@ router.put("/:id", (req, res) => {
 
 
 // Delete specific product - delete
-router.delete("/:id", (req, res) => {
+router.delete("/:id", verifyToken, (req, res) => {
 
     const id = req.params.id;
 
