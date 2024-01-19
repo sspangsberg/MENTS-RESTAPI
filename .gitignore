@@ -3,3 +3,5 @@ mongo-volume
 
 .env*
 package-lock.json
+
+.DS_Store
