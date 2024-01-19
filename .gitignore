@@ -1,5 +1,5 @@
 node_modules
 mongo-volume
 
-.env
+.env*
 package-lock.json
