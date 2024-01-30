@@ -4,15 +4,16 @@
   "description": "MongoDB-ExpressJS-NodeJS REST API",
   "main": "server.js",
   "scripts": {
-    "start-dev": "nodemon server.js",
+    "start-dev": "npx nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "nodemonConfig": {
     "verbose": false,
     "watch": [
-      ".env",
-      "*.js"
+      "src"
     ],
+    "ext": "js,ts",
+    "exec": "tsc && npx ts-node ./dist/server.js",
     "ignore": [
       "node_modules",
       "mongo-volume"
@@ -36,5 +37,10 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   }
 }

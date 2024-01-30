@@ -1,9 +1,10 @@
-const express = require("express");
+//const express = require("express");
+import express, {Application} from "express";
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const productRoutes = require("./routes/product");
 const userRoutes = require("./routes/auth");
-const app = express();
+const app: Application = express();
 
 require("dotenv-flow").config();
 
@@ -29,7 +30,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/user", userRoutes);
 
 
-const PORT = process.env.PORT || 4000;
+const PORT: Number = parseInt(process.env.PORT as string, 10) || 4000;
 
 app.listen(PORT, function() {
     console.log("Server is running on port: " + PORT);
