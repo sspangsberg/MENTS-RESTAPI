@@ -1,9 +1,10 @@
 //const express = require("express");
 import express, {Application} from "express";
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const productRoutes = require("./routes/product");
-const userRoutes = require("./routes/auth");
+import mongoose from "mongoose";
+import bodyParser from "body-parser";
+import productRoutes from "./routes/product";
+import userRoutes from "./routes/auth";
+
 const app: Application = express();
 
 require("dotenv-flow").config();
@@ -11,7 +12,7 @@ require("dotenv-flow").config();
 app.use(bodyParser.json());
 
 mongoose.connect(
-    process.env.DBHOST,
+    process.env.DBHOST!,
     {
         //useUnifiedTopology:true,
         //useNewUrlParser: true
