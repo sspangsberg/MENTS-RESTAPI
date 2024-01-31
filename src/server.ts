@@ -1,9 +1,8 @@
-//const express = require("express");
-import express, {Application} from "express";
+import express, {Application, Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import productRoutes from "./routes/product";
-import userRoutes from "./routes/auth";
+import { productRouter } from "./routes/product";
+import { authRouter } from "./routes/auth";
 
 const app: Application = express();
 
@@ -19,16 +18,16 @@ mongoose.connect(
     }
 ).catch(error => console.log("Error connecting to MongoDB:" + error));
 
-mongoose.connection.once("open", () => console.log("Connected succesfully to MongoDB"));
+mongoose.connection.once("open", () => console.log("Connected succesfully to MongoDB (" + process.env.DBHOST! + ")"));
 
 
 // route
-app.get("/api/welcome", (req, res) => {
+app.get("/api/welcome", (req: Request, res: Response) => {
     res.status(200).send({message: "Welcome to the MEN REST API"});
 })
 
-app.use("/api/products", productRoutes);
-app.use("/api/user", userRoutes);
+app.use("/api/products", productRouter);
+app.use("/api/user", authRouter);
 
 
 const PORT: Number = parseInt(process.env.PORT as string, 10) || 4000;
