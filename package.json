@@ -13,7 +13,7 @@
       "src"
     ],
     "ext": "js,ts",
-    "exec": "tsc && npx ts-node ./dist/server.js",
+    "exec": "npx ts-node ./src/server.ts",
     "ignore": [
       "node_modules",
       "mongo-volume"
