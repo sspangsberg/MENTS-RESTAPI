@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start-dev": "npx nodemon",
+    "build": "rm -rf dist/ && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "nodemonConfig": {
@@ -15,8 +16,7 @@
     "ext": "js,ts",
     "exec": "npx ts-node ./src/server.ts",
     "ignore": [
-      "node_modules",
-      "mongo-volume"
+      "node_modules"
     ]
   },
   "keywords": [
@@ -39,7 +39,9 @@
     "mongoose": "^8.0.3"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }

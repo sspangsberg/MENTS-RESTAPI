@@ -1,16 +1,13 @@
 import { type Request, type Response, type NextFunction, Router } from 'express';
-export const authRouter: Router = Router(); 
-
 import { User } from '../models/user';
-
-//const router = require("express").Router();
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const { registerValidation, loginValidation } = require("../validation");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
 // registration
-authRouter.post("/register", async (req: Request, res: Response) => {
+export const registerUser = async (req: Request, res: Response) => {
+    
     // validate the user and password
     const { error } = registerValidation(req.body);
 
@@ -46,12 +43,10 @@ authRouter.post("/register", async (req: Request, res: Response) => {
     } catch (error) {
         res.status(400).json( { error } );
     }
-});
-
+};
 
 // login
-authRouter.post("/login", async (req: Request, res: Response) => {
-    //
+export const loginUser = async (req: Request, res: Response) => {
 
     // validate user login inf
     const { error } = loginValidation(req.body);
@@ -85,7 +80,7 @@ authRouter.post("/login", async (req: Request, res: Response) => {
 
         },
         // TOKEN_SECRET,
-        process.env.TOKEN_SECRET,
+        process.env.TOKEN_SECRET!,
         // EXPIRATION
         { expiresIn: process.env.JWT_EXPIRES_IN }
     );
@@ -95,6 +90,4 @@ authRouter.post("/login", async (req: Request, res: Response) => {
         error: null,
         data: { token }
     })
-});
-
-//module.exports = router;
+};
