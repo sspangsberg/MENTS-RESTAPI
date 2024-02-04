@@ -17,6 +17,6 @@
     "noImplicitAny": true,
     "skipLibCheck": true
   },
-    "include": ["./src"],
+    "include": ["./src","./src/swagger-output.json"],
     "exclude": ["node_modules/**/*"]
-  }
+}

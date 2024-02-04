@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { Product } from '../models/product';
+import { ProductModel } from '../models/ProductModel';
 
 // CRUD routes
 export const createProduct = (req: Request, res: Response) => {
     let data = req.body;
 
-    Product.insertMany(data)
+    ProductModel.insertMany(data)
     .then(data => { res.send(data); })
     .catch((err:string) => { res.status(500).send( { message: err }); })
 };
@@ -13,7 +13,7 @@ export const createProduct = (req: Request, res: Response) => {
 // Read all products - get
 export const getAllProducts = (req: Request, res: Response) => {
 
-    Product.find()
+    ProductModel.find()
     .then(data => { res.send(data); })
     .catch((err:string) => { res.status(500).send( { message: err }); })
 };
@@ -21,7 +21,7 @@ export const getAllProducts = (req: Request, res: Response) => {
 // Read all products currently in stock - get
 export const getProductsInStock = (req: Request, res: Response) => {
 
-    Product.find({ inStock: true })
+    ProductModel.find({ inStock: true })
     .then(data => { res.send(data); })
     .catch((err:string) => { res.status(500).send( { message: err }); })
 };
@@ -30,7 +30,7 @@ export const getProductsInStock = (req: Request, res: Response) => {
 // Read all products - get
 export const getProductById = (req: Request, res: Response) => {
 
-    Product.findById(req.params.id)
+    ProductModel.findById(req.params.id)
     .then(data => { res.send(data); })
     .catch((err:string) => { res.status(500).send( { message: err }); })
 };
@@ -40,7 +40,7 @@ export const updateProductById = (req: Request, res: Response) => {
 
     const id = req.params.id;
 
-    Product.findByIdAndUpdate(id, req.body)
+    ProductModel.findByIdAndUpdate(id, req.body)
     .then(data => { 
         if (!data) {
             res.status(404).send( { message: "Cannot update product with id=" + id + ". Maybe product was not found."});
@@ -55,9 +55,12 @@ export const updateProductById = (req: Request, res: Response) => {
 // Delete specific product - delete
 export const deleteProductById = (req: Request, res: Response) => {
 
+    /* #swagger.security = [{
+            "apiKeyAuth": []
+    }] */
     const id = req.params.id;
 
-    Product.findByIdAndDelete(id)
+    ProductModel.findByIdAndDelete(id)
     .then(data => { 
         if (!data) {
             res.status(404).send( { message: "Cannot delete product with id=" + id + ". Maybe product was not found."});

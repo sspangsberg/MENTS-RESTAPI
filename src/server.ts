@@ -1,30 +1,29 @@
+// Imports
 import express, { Application } from "express";
-import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import routes from "./routes";
+import swaggerUi from "swagger-ui-express";
+import swaggerOutput from "./util/swagger_output.json";
 
-const app: Application = express();
+
+// Project imports
+import routes from "./routes";
+import { DBConnect } from "./util/DBManager";
 
 require("dotenv-flow").config();
 
+const PORT: Number = parseInt(process.env.PORT as string, 10) || 4000;
+const app: Application = express();
 app.use(bodyParser.json());
 
-mongoose.connect(
-    process.env.DBHOST!,
-    {
-        //useUnifiedTopology:true,
-        //useNewUrlParser: true
-    }
-).catch(error => console.log("Error connecting to MongoDB:" + error));
+// Connect to database
+DBConnect();
 
-mongoose.connection.once("open", () => console.log("Connected succesfully to MongoDB (" + process.env.DBHOST! + ")"));
-
+// Attach routes handled by controllers
 app.use("/api/", routes);
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 
-const PORT: Number = parseInt(process.env.PORT as string, 10) || 4000;
 
+// Start server and listen for request on selected port
 app.listen(PORT, function() {
     console.log("Server is running on port: " + PORT);
 })
-
-module.exports = app;

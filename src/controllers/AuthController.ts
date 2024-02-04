@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction, Router } from 'express';
-import { User } from '../models/user';
-import bcrypt from 'bcrypt';
+import { UserModel } from '../models/UserModel';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 const { registerValidation, loginValidation } = require("../validation");
 
@@ -15,9 +15,8 @@ export const registerUser = async (req: Request, res: Response) => {
         return res.status(400).json({ error: error.details[0].message });
     }
     
-        
     // check if the email is already registered
-    const emailExist = await User.findOne({ email: req.body.email });
+    const emailExist = await UserModel.findOne({ email: req.body.email });
 
     if (emailExist) {
         return res.status(400).json({ error: "Email already exists. "});
@@ -30,7 +29,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
 
     // create a user object and save in the DB
-    const userObject = new User( {
+    const userObject = new UserModel( {
         name: req.body.name,
         email: req.body.email,
         password
@@ -54,9 +53,9 @@ export const loginUser = async (req: Request, res: Response) => {
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
     }
-
+    
     // if login info is valid, find the user
-    const user = await User.findOne({ email: req.body.email });
+    const user = await UserModel.findOne({ email: req.body.email });
 
 
     // throw error if email is wrong (user does not exist in DB)

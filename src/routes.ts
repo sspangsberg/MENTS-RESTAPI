@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { 
     createProduct,
     getAllProducts,
@@ -17,14 +17,13 @@ export const router: Router = Router();
 
 const { verifyToken } = require("./validation");
 
-// routes
-/*
-router.get("/api/welcome", (req: Request, res: Response) => {
+// healthcheck
+router.get("/welcome", (req: Request, res: Response) => {
     res.status(200).send({message: "Welcome to the MEN REST API"});
-})
-*/
+});
 
-// user routes
+
+// auth/user routes
 router.post('/user/register', registerUser);
 router.post('/user/login', loginUser);
 
