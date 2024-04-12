@@ -1,5 +1,7 @@
 import { type Request, type Response, type NextFunction, Router } from 'express';
 import { UserModel } from '../models/UserModel';
+import { IUser } from '../interfaces/IUser';
+
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
@@ -55,7 +57,7 @@ export const loginUser = async (req: Request, res: Response) => {
     }
     
     // if login info is valid, find the user
-    const user = await UserModel.findOne({ email: req.body.email });
+    const user: IUser | null = await UserModel.findOne({ email: req.body.email });
 
 
     // throw error if email is wrong (user does not exist in DB)
@@ -64,14 +66,14 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 
     // user exist - check for password correctness
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    const validPassword:Boolean = await bcrypt.compare(req.body.password, user.password);
 
     // throw error if password is wrong
     if (!validPassword)
         return res.status(400).json({ error: "Password is wrong. "});
 
     // create authentication token with username and id
-    const token = jwt.sign( 
+    const token:string = jwt.sign( 
         // payload
         {
             name: user.name,

@@ -55,9 +55,6 @@ export const updateProductById = (req: Request, res: Response) => {
 // Delete specific product - delete
 export const deleteProductById = (req: Request, res: Response) => {
 
-    /* #swagger.security = [{
-            "apiKeyAuth": []
-    }] */
     const id = req.params.id;
 
     ProductModel.findByIdAndDelete(id)

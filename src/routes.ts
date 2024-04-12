@@ -19,7 +19,7 @@ const { verifyToken } = require("./validation");
 
 // healthcheck
 router.get("/welcome", (req: Request, res: Response) => {
-    res.status(200).send({message: "Welcome to the MEN REST API"});
+    res.status(200).send({message: "Welcome to the TypeScript MEN REST-API"});
 });
 
 
@@ -30,9 +30,9 @@ router.post('/user/login', loginUser);
 // product routes
 router.post('/products/', verifyToken, createProduct);
 router.get('/products/',getAllProducts);
-router.get('/products/:id', getProductById);
 router.get('/products/instock', getProductsInStock);
+router.get('/products/:id', getProductById);
 router.put('/products/:id', verifyToken, updateProductById),
-router.delete('/products/:',verifyToken, deleteProductById);
+router.delete('/products/:id',verifyToken, deleteProductById);
 
 export default router;
