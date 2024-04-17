@@ -4,7 +4,8 @@
   "description": "MongoDB-ExpressJS-NodeJS REST API",
   "main": "server.js",
   "scripts": {
-    "start-dev": "npx nodemon",
+    "localdb": "cross-env NODE_ENV=local npx nodemon",
+    "remotedb": "cross-env NODE_ENV=remote npx nodemon",
     "build": "rm -rf dist/ && tsc",
     "doc": "npx ts-node src/util/SwaggerDoc.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
