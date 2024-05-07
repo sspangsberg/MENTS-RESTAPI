@@ -4,18 +4,18 @@ import {
     getAllProducts,
     getProductById,
     getProductsInStock,
+    getProductsBasedOnFilter,
     updateProductById,
     deleteProductById    
 } from './controllers/ProductController';
 
 import {
     registerUser,
-    loginUser
+    loginUser,
+    verifyToken
 } from './controllers/AuthController';
 
 export const router: Router = Router();
-
-const { verifyToken } = require("./validation");
 
 // healthcheck
 router.get("/welcome", (req: Request, res: Response) => {
@@ -31,6 +31,8 @@ router.post('/user/login', loginUser);
 router.post('/products/', verifyToken, createProduct);
 router.get('/products/',getAllProducts);
 router.get('/products/instock', getProductsInStock);
+router.get('/products/:field/:value', getProductsBasedOnFilter);
+
 router.get('/products/:id', getProductById);
 router.put('/products/:id', verifyToken, updateProductById),
 router.delete('/products/:id',verifyToken, deleteProductById);

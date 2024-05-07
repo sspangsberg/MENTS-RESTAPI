@@ -3,6 +3,7 @@ import { ProductModel } from '../models/ProductModel';
 
 // CRUD routes
 export const createProduct = (req: Request, res: Response) => {
+     
     let data = req.body;
 
     ProductModel.insertMany(data)
@@ -21,7 +22,7 @@ export const getAllProducts = (req: Request, res: Response) => {
 // Read all products currently in stock - get
 export const getProductsInStock = (req: Request, res: Response) => {
 
-    ProductModel.find({ inStock: true })
+    ProductModel.find({ stock: { "$gt": 0 }})
     .then(data => { res.send(data); })
     .catch((err:string) => { res.status(500).send( { message: err }); })
 };
@@ -34,6 +35,20 @@ export const getProductById = (req: Request, res: Response) => {
     .then(data => { res.send(data); })
     .catch((err:string) => { res.status(500).send( { message: err }); })
 };
+
+
+//Read all documents based on variable field and value
+export const getProductsBasedOnFilter = (req: Request, res: Response) => {
+    const field = req.params.field;
+    const value = req.params.value;
+
+    ProductModel.find({ [field]: { $regex: req.params.value, $options: 'i' } })
+        .then(data => { res.send(data) })
+        .catch(err => {
+            res.status(500).send({ message: err.message })
+        })
+};
+
 
 // Update specific product - put
 export const updateProductById = (req: Request, res: Response) => {
