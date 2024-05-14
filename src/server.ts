@@ -6,7 +6,7 @@ import YAML from "yamljs";
 
 // Project imports
 import routes from "./routes";
-import { DBConnect } from "./util/DBManager";
+import { DBConnect } from "./util/dbManager";
 
 require("dotenv-flow").config();
 

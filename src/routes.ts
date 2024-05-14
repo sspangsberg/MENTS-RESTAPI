@@ -7,13 +7,13 @@ import {
     getProductsBasedOnFilter,
     updateProductById,
     deleteProductById    
-} from './controllers/ProductController';
+} from './controllers/productController';
 
 import {
     registerUser,
     loginUser,
     verifyToken
-} from './controllers/AuthController';
+} from './controllers/authController';
 
 export const router: Router = Router();
 

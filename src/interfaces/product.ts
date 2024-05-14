@@ -1,12 +1,13 @@
 import { ObjectId } from "mongodb";
-import { IUser } from "./IUser";
+import { User } from "./user";
 
-export interface IProduct extends Document {
+export interface Product extends Document {
   id: ObjectId;
   name: string;
   description: string;
   price: Number;
   stock: Number;
   status: Boolean;
-  _createdBy: IUser["id"];
+  //_createdBy: User["id"];
+  _createdBy: string;
 }

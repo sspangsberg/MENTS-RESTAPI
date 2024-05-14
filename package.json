@@ -6,8 +6,8 @@
   "scripts": {
     "localdb": "cross-env NODE_ENV=local npx nodemon",
     "remotedb": "cross-env NODE_ENV=remote npx nodemon",
+    "seed": "npx ts-node ./src/util/dbSeeder.ts",
     "build": "rm -rf dist/ && tsc",
-    "doc": "npx ts-node src/util/SwaggerDoc.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "nodemonConfig": {
