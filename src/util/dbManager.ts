@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const DBConnect = () => {
+export const connect = () => {
   mongoose
     .connect(process.env.DBHOST!, {
       //useUnifiedTopology:true,

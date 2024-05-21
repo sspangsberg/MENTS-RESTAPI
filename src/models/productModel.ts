@@ -9,8 +9,8 @@ let productSchema = new Schema<Product>(
         price: { type:Number, required:true },
         stock: { type:Number, required:true },
         status: { type:Boolean, required:true, default: true },
-        //_createdBy: { type: Schema.Types.ObjectId, ref: "User", required:true }
-        _createdBy: { type: String, required:true }
+        _createdBy: { type: Schema.Types.ObjectId, ref: "User", required:true }
+        //_createdBy: { type: String, required:true }
     }
 )
 

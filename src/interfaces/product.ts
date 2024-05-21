@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-//import { User } from "./user";
+import { User } from "./user";
 
 export interface Product extends Document {
   id: ObjectId;
@@ -8,6 +8,6 @@ export interface Product extends Document {
   price: Number;
   stock: Number;
   status: Boolean;
-  //_createdBy: User["id"];
-  _createdBy: string;
+  _createdBy: User["id"];
+  //_createdBy: string;
 }

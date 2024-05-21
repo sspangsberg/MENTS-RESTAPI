@@ -6,7 +6,7 @@ import YAML from "yamljs";
 
 // Project imports
 import routes from "./routes";
-import { DBConnect } from "./util/dbManager";
+import { connect } from "./util/DBManager";
 
 require("dotenv-flow").config();
 
@@ -19,7 +19,7 @@ const swaggerDocument = YAML.load("./docs/swagger.yaml");
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Connect to database
-DBConnect();
+connect();
 
 // Attach routes handled by controllers
 app.use("/api/", routes);
