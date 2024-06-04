@@ -1,4 +1,5 @@
 // Imports
+import { Router, Request, Response, response } from "express";
 import express, { Application } from "express";
 import bodyParser from "body-parser";
 import swaggerUi from "swagger-ui-express";
@@ -41,6 +42,13 @@ connect();
 app.use("/api/", routes);
 
 // Start server and listen for request on selected port
-app.listen(PORT, function () {
+app.listen(PORT, function() {
   console.log("Server is running on port: " + PORT);
 });
+
+// healthcheck
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).send({ message: "API running" });
+});
+
+export default app;
