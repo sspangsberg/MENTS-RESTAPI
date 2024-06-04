@@ -1,9 +1,8 @@
-import mongoose from "mongoose";
 import { productModel } from "../models/productModel";
 import { userModel } from "../models/userModel";
 import { connect } from "./dbManager";
 import bcrypt from "bcrypt";
-import { Product } from "../interfaces/product";
+
 require("dotenv-flow").config();
 
 export const seed = async () => {
@@ -27,8 +26,7 @@ const deleteAllData = async () => {
 };
 
 const seedData = async () => {
-  // has the password
-  //const salt = await bcrypt.genSalt(10);
+  // hash the password
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash("12345678", salt);
 
@@ -64,8 +62,8 @@ const seedData = async () => {
     {
       name: "Product #3 (made by Heidi)",
       description: "Product #3 description",
-      price: 100.96,
-      stock: 15,
+      price: 192.96,
+      stock: 150,
       status: false,
       _createdBy: user2.id,
     },
@@ -79,21 +77,9 @@ const seedData = async () => {
     }
   ];
       
-  
-    let p = new productModel();
-    p.name = products[0].name;
-    p.description = products[0].description;
-    p.price = products[0].price;
-    p.stock = products[0].stock;
-    p.status = products[0].status;
-    p._createdBy = products[0]._createdBy;
-
-    await p.save();
-
-    console.log(p.id);
-
-
-  console.log("Seeded data successfully...");
+    await productModel.insertMany(products);
+    
+    console.log("Seeded data successfully...");
 }
 
 // start the actual seeding

@@ -5,7 +5,9 @@ import { productModel } from "../models/productModel";
 export const createProduct = (req: Request, res: Response) => {
   let data = req.body;
 
-  productModel.insertMany(data)
+  productModel
+    .insertMany(data)
+
     .then((data) => {
       res.send(data);
     })
@@ -16,7 +18,8 @@ export const createProduct = (req: Request, res: Response) => {
 
 // Read all products - get
 export const getAllProducts = (req: Request, res: Response) => {
-  productModel.find()
+  productModel
+    .find()
     .then((data) => {
       res.send(data);
     })
@@ -27,7 +30,8 @@ export const getAllProducts = (req: Request, res: Response) => {
 
 // Read all products currently in stock - get
 export const getProductsInStock = (req: Request, res: Response) => {
-  productModel.find({ stock: { $gt: 0 } })
+  productModel
+    .find({ stock: { $gt: 0 } })
     .then((data) => {
       res.send(data);
     })
@@ -39,7 +43,8 @@ export const getProductsInStock = (req: Request, res: Response) => {
 // Read specific product - get
 // Read all products - get
 export const getProductById = (req: Request, res: Response) => {
-  productModel.findById(req.params.id)
+  productModel
+    .findById(req.params.id)
     .then((data) => {
       res.send(data);
     })
@@ -53,7 +58,8 @@ export const getProductsBasedOnFilter = (req: Request, res: Response) => {
   const field = req.params.field;
   const value = req.params.value;
 
-  productModel.find({ [field]: { $regex: req.params.value, $options: "i" } })
+  productModel
+    .find({ [field]: { $regex: req.params.value, $options: "i" } })
     .then((data) => {
       res.send(data);
     })
@@ -66,17 +72,16 @@ export const getProductsBasedOnFilter = (req: Request, res: Response) => {
 export const updateProductById = (req: Request, res: Response) => {
   const id = req.params.id;
 
-  productModel.findByIdAndUpdate(id, req.body)
+  productModel
+    .findByIdAndUpdate(id, req.body)
     .then((data) => {
       if (!data) {
-        res
-          .status(404)
-          .send({
-            message:
-              "Cannot update product with id=" +
-              id +
-              ". Maybe product was not found.",
-          });
+        res.status(404).send({
+          message:
+            "Cannot update product with id=" +
+            id +
+            ". Maybe product was not found.",
+        });
       } else {
         res.send({ message: "Product was succesfully updated." });
       }
@@ -90,17 +95,16 @@ export const updateProductById = (req: Request, res: Response) => {
 export const deleteProductById = (req: Request, res: Response) => {
   const id = req.params.id;
 
-  productModel.findByIdAndDelete(id)
+  productModel
+    .findByIdAndDelete(id)
     .then((data) => {
       if (!data) {
-        res
-          .status(404)
-          .send({
-            message:
-              "Cannot delete product with id=" +
-              id +
-              ". Maybe product was not found.",
-          });
+        res.status(404).send({
+          message:
+            "Cannot delete product with id=" +
+            id +
+            ". Maybe product was not found.",
+        });
       } else {
         res.send({ message: "Product was succesfully deleted." });
       }
