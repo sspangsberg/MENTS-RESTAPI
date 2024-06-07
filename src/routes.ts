@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import {
   createProduct,
-  getAllProducts,
+  getProducts,
   getProductById,
   getProductsInStock,
   getProductsBasedOnFilter,
@@ -9,13 +9,16 @@ import {
   deleteProductById,
 } from "./controllers/productController";
 
+import { ProductControllerC } from "./controllers/ProductControllerC";
+
 import {
   registerUser,
   loginUser,
   verifyToken,
 } from "./controllers/authController";
 
-export const router: Router = Router();
+const router: Router = Router();
+const getAll = new ProductControllerC().getAll;
 
 // healthcheck
 router.get("/welcome", (req: Request, res: Response) => {
@@ -28,12 +31,13 @@ router.post("/user/login", loginUser);
 
 // product routes
 router.post("/products/", createProduct);
-router.get("/products/", getAllProducts);
+//router.get("/products/", getProducts);
+router.get("/products", getAll);
 router.get("/products/instock", getProductsInStock);
 router.get("/products/:field/:value", getProductsBasedOnFilter);
 
 router.get("/products/:id", getProductById);
 router.put("/products/:id", verifyToken, updateProductById),
-router.delete("/products/:id", deleteProductById);
+  router.delete("/products/:id", deleteProductById);
 
 export default router;

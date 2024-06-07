@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { productModel } from "../models/productModel";
+import { DBManager } from "../util/dbManager";
+import { ProductService } from "../services/ProductService";
 
 // CRUD routes
 export const createProduct = (req: Request, res: Response) => {
@@ -16,8 +18,22 @@ export const createProduct = (req: Request, res: Response) => {
     });
 };
 
-// Read all products - get
-export const getAllProducts = (req: Request, res: Response) => {
+
+// Read all products currently in stock - get
+export async function getProducts(req: Request, res: Response) {
+  
+  try {
+    //console.log("asdfasdfasd" + this.pService);
+    //const pService = new ProductService();
+    var result = await new ProductService().getAll();
+
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).send({ message: error });
+  }
+
+  /*
+  new DBManager().connect();
   productModel
     .find()
     .then((data) => {
@@ -26,7 +42,9 @@ export const getAllProducts = (req: Request, res: Response) => {
     .catch((err: string) => {
       res.status(500).send({ message: err });
     });
-};
+    */
+}
+
 
 // Read all products currently in stock - get
 export const getProductsInStock = (req: Request, res: Response) => {

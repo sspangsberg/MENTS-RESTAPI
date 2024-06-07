@@ -8,7 +8,7 @@ import cors from "cors";
 
 // Project imports
 import routes from "./routes";
-import { connect } from "./util/DBManager";
+import { DBManager } from "./util/DBManager";
 
 require("dotenv-flow").config();
 
@@ -36,7 +36,7 @@ const swaggerDocument = YAML.load("./docs/swagger.yaml");
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Connect to database
-connect();
+//new DBManager().connect();
 
 // Attach routes handled by controllers
 app.use("/api/", routes);
