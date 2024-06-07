@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { productModel } from "../models/productModel";
 import { ProductService } from "../services/ProductService";
 
 export class ProductControllerC {
@@ -11,12 +12,9 @@ export class ProductControllerC {
    * @param req
    * @param res
    */
-  public async getAll(req: Request, res: Response) {
+  public getProducts(req: Request, res: Response) {
     try {
-      console.log("asdfasdfasd" + this.pService);
-
-      var result = await this.pService.getAll();
-
+      var result = this.pService.getAll();
       res.status(200).send(result);
     } catch (error) {
       res.status(500).send({ message: error });

@@ -9,7 +9,7 @@ import {
   deleteProductById,
 } from "./controllers/productController";
 
-import { ProductControllerC } from "./controllers/ProductControllerC";
+//import { ProductControllerC } from "./controllers/ProductControllerC";
 
 import {
   registerUser,
@@ -18,7 +18,11 @@ import {
 } from "./controllers/authController";
 
 const router: Router = Router();
-const getAll = new ProductControllerC().getAll;
+
+// healthcheck
+router.get("/", (req: Request, res: Response) => {
+  res.status(200).send({ message: "API running" });
+});
 
 // healthcheck
 router.get("/welcome", (req: Request, res: Response) => {
@@ -30,9 +34,9 @@ router.post("/user/register", registerUser);
 router.post("/user/login", loginUser);
 
 // product routes
-router.post("/products/", createProduct);
-//router.get("/products/", getProducts);
-router.get("/products", getAll);
+router.post("/products", createProduct);
+router.get("/products", getProducts);
+//router.get("/products", (req, res) => new ProductControllerC().getProducts);
 router.get("/products/instock", getProductsInStock);
 router.get("/products/:field/:value", getProductsBasedOnFilter);
 
