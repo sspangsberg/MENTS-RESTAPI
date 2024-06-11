@@ -1,10 +1,10 @@
 import { Router, Request, Response } from "express";
 import {
   createProduct,
-  getProducts,
+  getAllProducts,
   getProductById,
   getProductsInStock,
-  getProductsBasedOnFilter,
+  getProductsBasedOnQuery,
   updateProductById,
   deleteProductById,
 } from "./controllers/productController";
@@ -35,10 +35,9 @@ router.post("/user/login", loginUser);
 
 // product routes
 router.post("/products", createProduct);
-router.get("/products", getProducts);
-//router.get("/products", (req, res) => new ProductControllerC().getProducts);
+router.get("/products", getAllProducts);
 router.get("/products/instock", getProductsInStock);
-router.get("/products/:field/:value", getProductsBasedOnFilter);
+router.get("/products/query", getProductsBasedOnQuery);
 
 router.get("/products/:id", getProductById);
 router.put("/products/:id", verifyToken, updateProductById),

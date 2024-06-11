@@ -9,87 +9,71 @@ export async function createProduct(req: Request, res: Response) {
   let data = req.body;
 
   try {
-    await pService.create(data);
+    var result = await pService.create(data);
+    res.status(201).send({ data: result });
   } catch (error) {
     res.status(500).send({ message: error });
   }
-  
-/*
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err: string) => {
-      
-    });
-    */
 }
 
-
 /**
- * 
- * @param req 
- * @param res 
+ *
+ * @param req
+ * @param res
  */
-export async function getProducts(req: Request, res: Response) {
+export async function getAllProducts(req: Request, res: Response) {
   try {
-    var result = await pService.getAll();
+    var result = await pService.get({});
     res.status(200).send(result);
   } catch (error) {
     res.status(500).send({ message: error });
   }
-
-  /*
-  new DBManager().connect();
-  productModel
-    .find()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err: string) => {
-      res.status(500).send({ message: err });
-    });
-    */
 }
 
-// Read all products currently in stock - get
-export const getProductsInStock = (req: Request, res: Response) => {
-  productModel
-    .find({ stock: { $gt: 0 } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err: string) => {
-      res.status(500).send({ message: err });
-    });
-};
+/**
+ *
+ * @param req
+ * @param res
+ */
+export async function getProductsInStock(req: Request, res: Response) {
+  try {
+    var result = await pService.get({ stock: { $gt: 0 } });
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).send({ message: error });
+  }
+}
 
-// Read specific product - get
-// Read all products - get
-export const getProductById = (req: Request, res: Response) => {
-  productModel
-    .findById(req.params.id)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err: string) => {
-      res.status(500).send({ message: err });
-    });
-};
+/**
+ *
+ * @param req
+ * @param res
+ */
+export async function getProductById(req: Request, res: Response) {
+  try {
+    var result = await pService.get({ _id: req.params.id });
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).send({ message: error });
+  }
+}
 
-//Read all documents based on variable field and value
-export const getProductsBasedOnFilter = (req: Request, res: Response) => {
-  const field = req.params.field;
-  const value = req.params.value;
+/**
+ *
+ * @param req
+ * @param res
+ */
+export async function getProductsBasedOnQuery(req: Request, res: Response) {
+  const field = req.body.field;
+  const value = req.body.value;
 
-  productModel
-    .find({ [field]: { $regex: req.params.value, $options: "i" } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-    });
-};
+  try {
+    var result = await pService.get({ [field]: [value] });
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).send({ message: error });
+  }
+}
 
 // Update specific product - put
 export const updateProductById = (req: Request, res: Response) => {
