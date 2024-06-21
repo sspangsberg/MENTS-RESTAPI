@@ -1,13 +1,13 @@
 import { productModel } from "../models/productModel";
 import { userModel } from "../models/userModel";
-import { connect } from "./dbManager";
+import { DBManager } from "./DBManager";
 import bcrypt from "bcrypt";
 
 require("dotenv-flow").config();
 
 export const seed = async () => {
   try {
-    connect();
+    DBManager.connect();
 
     await deleteAllData();
     await seedData();
