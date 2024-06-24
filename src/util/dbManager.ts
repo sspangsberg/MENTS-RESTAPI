@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 export class DBManager {
-  public DBManager() {}
 
   /**
    *

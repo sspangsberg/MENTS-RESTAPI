@@ -131,12 +131,165 @@ router.post("/user/login", loginUser);
  *               $ref: "#/components/schemas/Product"
  */
 router.post("/products", createProduct);
-router.get("/products", getAllProducts);
-router.get("/products/instock", getProductsInStock);
-router.get("/products/query", getProductsBasedOnQuery);
 
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     tags:
+ *       - Product Routes
+ *     summary: Retrieves a list of Products
+ *     description: Retrieves a list of products as JSON objects.
+ *     responses:
+ *       200:
+ *         description: A list of product JSON objects in an array.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/Product"
+ */
+router.get("/products", getAllProducts);
+
+/**
+ * @swagger
+ * /products/instock:
+ *   get:
+ *     tags:
+ *       - Product Routes
+ *     summary: Retrieves all Products with a positive stock
+ *     description:
+ *     responses:
+ *       200:
+ *         description: A list of Product JSON objects in an array.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/Product"
+ */
+router.get("/products/instock", getProductsInStock);
+
+/**
+ * @swagger
+ * /products/query:
+ *   post:
+ *     tags:
+ *       - Product Routes
+ *     summary: Retrieves all Products based on a specified query
+ *     description:
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               field:
+ *                 type: string
+ *               value:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: A list of Product JSON objects in an array.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/Product"
+ */
+router.post("/products/query", getProductsBasedOnQuery);
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     tags:
+ *       - Product Routes
+ *     summary: Specific Product
+ *     description: Retrieves a specific Product based on it id.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB id
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A Product in the format of a JSON object.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/Product"
+ */
 router.get("/products/:id", getProductById);
-router.put("/products/:id", verifyToken, updateProductById),
-  router.delete("/products/:id", deleteProductById);
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   put:
+ *     tags:
+ *       - Product Routes
+ *     summary: Updates a specific Product
+ *     description: Updates a specific Product based on it id
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB id
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Product"
+ *
+ *     responses:
+ *       201:
+ *         description: Product updated succesfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Product"
+ */
+router.put("/products/:id", verifyToken, updateProductById);
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     tags:
+ *       - Product Routes
+ *     summary: Deletes a specific Product
+ *     description: Deletes a specific Product based on it id
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB id
+ *         schema:
+ *           type: string
+ *
+ *     responses:
+ *       201:
+ *         description: Product deleted succesfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Product"
+ */
+router.delete("/products/:id", deleteProductById);
 
 export default router;

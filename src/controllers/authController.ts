@@ -1,13 +1,12 @@
 import {
   type Request,
   type Response,
-  type NextFunction,
-  Router,
+  type NextFunction
 } from "express";
 import { userModel } from "../models/userModel";
 import { User } from "../interfaces/user";
 
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { ObjectId } from "mongodb";
 import Joi, { ValidationResult } from "joi";
