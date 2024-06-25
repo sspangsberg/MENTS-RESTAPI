@@ -1,13 +1,13 @@
 import { productModel } from "../models/productModel";
 import { userModel } from "../models/userModel";
-import { DBManager } from "./DBManager";
+import { dbManager } from "./dbManager";
 import bcrypt from "bcrypt";
 
 require("dotenv-flow").config();
 
 export const seed = async () => {
   try {
-    DBManager.connect();
+    dbManager.connect();
 
     await deleteAllData();
     await seedData();
@@ -35,7 +35,7 @@ const seedData = async () => {
   user1.email = "peter@petersen.com";
   user1.password = passwordHash;
   await user1.save();
-  
+
   let user2 = new userModel();
   user2.name = "Heidi Jensen";
   user2.email = "heidi@jensen.com";
@@ -74,13 +74,13 @@ const seedData = async () => {
       stock: 15,
       status: false,
       _createdBy: user2.id,
-    }
+    },
   ];
-      
-    await productModel.insertMany(products);
-    
-    console.log("Seeded data successfully...");
-}
+
+  await productModel.insertMany(products);
+
+  console.log("Seeded data successfully...");
+};
 
 // start the actual seeding
 seed();
