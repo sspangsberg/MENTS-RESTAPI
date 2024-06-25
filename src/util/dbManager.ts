@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-export class DBManager {
+export class dbManager {
 
-  public DBManager() {}
+  public dbManager() {}
 
   /**
    *

@@ -5,7 +5,7 @@ import cors from "cors";
 
 // Project imports
 import routes from "./routes";
-import { DBManager } from "./util/DBManager";
+import { dbManager } from "./util/dbManager";
 import { DocManager } from "./util/DocManager";
 
 export class App {
@@ -16,7 +16,7 @@ export class App {
   public startServer() {
     require("dotenv-flow").config();
 
-    DBManager.connect();
+    dbManager.connect();
     DocManager.setupDocs(this.app);
 
     this.app.use(bodyParser.json());
