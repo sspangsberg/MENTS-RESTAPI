@@ -5,7 +5,7 @@ import cors from "cors";
 
 // Project imports
 import routes from "./routes";
-import { DBManager } from "./util/dbManager";
+import { DBManager } from "./util/DBManager";
 import { DocManager } from "./util/DocManager";
 
 export class App {
