@@ -3,11 +3,13 @@ import { userModel } from "../models/userModel";
 import { DBManager } from "./DBManager";
 import bcrypt from "bcrypt";
 
+
 require("dotenv-flow").config();
 
 export const seed = async () => {
   try {
     DBManager.connect();
+    
 
     await deleteAllData();
     await seedData();
@@ -46,33 +48,45 @@ const seedData = async () => {
     {
       name: "Product #1 (made by Peter)",
       description: "Product #1 description",
+      imageURL: "https://picsum.photos/500/500",
       price: 2,
       stock: 20,
-      status: true,
+      discount: true,
+      discountPct: 10,
+      isHidden: false,
       _createdBy: user1.id,
     },
     {
       name: "Product #2 (made by Peter)",
       description: "Product #2 description",
+      imageURL: "https://picsum.photos/500/500",
       price: 100.96,
       stock: 15,
-      status: false,
+      discount: true,
+      discountPct: 25,
+      isHidden: false,
       _createdBy: user1.id,
     },
     {
       name: "Product #3 (made by Heidi)",
       description: "Product #3 description",
+      imageURL: "https://picsum.photos/500/500",
       price: 192.96,
       stock: 150,
-      status: false,
+      discount: false,
+      discountPct: 0,
+      isHidden: false,
       _createdBy: user2.id,
     },
     {
       name: "Product #4 (made by Heidi)",
       description: "Product #4 description",
+      imageURL: "https://picsum.photos/500/500",
       price: 594.91,
       stock: 15,
-      status: false,
+      discount: false,
+      discountPct: 0,
+      isHidden: false,
       _createdBy: user2.id,
     },
   ];

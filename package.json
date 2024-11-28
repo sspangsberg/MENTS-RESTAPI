@@ -6,7 +6,8 @@
   "scripts": {
     "localdb": "cross-env NODE_ENV=local npx nodemon",
     "remotedb": "cross-env NODE_ENV=remote npx nodemon",
-    "seed": "npx ts-node ./src/util/dbSeeder.ts",
+    "seed-local": "cross-env NODE_ENV=local npx ts-node ./src/util/dbSeeder.ts",
+    "seed-remote": "cross-env NODE_ENV=remote npx ts-node ./src/util/dbSeeder.ts",
     "build": "rm -rf dist/ && tsc",
     "test": "npx playwright test --reporter=list",
     "report": "npx playwright test --reporter=html && npx playwright show-report"
