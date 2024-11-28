@@ -20,9 +20,13 @@ export class App {
     DocManager.setupDocs(this.app);
 
     this.app.use(bodyParser.json());
+    
+    // kw 28-nov-2024 - init CORS before defining Routes
+    this.setupCors();
+    
     this.app.use("/api/", routes);
 
-    this.setupCors();
+
 
     const PORT: Number = parseInt(process.env.PORT as string, 10) || 4000;
     this.app.listen(PORT, function () {
