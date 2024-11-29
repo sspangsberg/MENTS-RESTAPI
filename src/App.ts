@@ -41,8 +41,9 @@ export class App {
     this.app.use(
       cors({
         origin: "*", // Allow requests from any origin
-        // kw 29-nov-2024 - allow methods
+        // kw 29-nov-2024 - allow methods + headers + credentials
         methods: 'GET,HEAD,PUT,OPTIONS,PATCH,POST,DELETE',
+        allowedHeaders: ['auth-token', 'Origin', 'X-Requested-With', 'Content-Type', 'Accept'], // Allow specific headers
         credentials: true,
       })
     )
