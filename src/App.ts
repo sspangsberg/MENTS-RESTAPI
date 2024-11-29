@@ -40,8 +40,11 @@ export class App {
   private setupCors() {
     this.app.use(
       cors({
-        origin: "*",
+        origin: "*", // Allow requests from any origin
+        // kw 29-nov-2024 - allow methods
+        methods: 'GET,HEAD,PUT,OPTIONS,PATCH,POST,DELETE',
+        credentials: true,
       })
-    );
+    )
   }
 }
