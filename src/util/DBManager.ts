@@ -1,22 +1,23 @@
 import mongoose from "mongoose";
 
 export class DBManager {
-
   public DBManager() {}
 
   /**
    *
    */
-  public static connect() {
+  public static async connect() {
     try {
-      mongoose.connect(process.env.DBHOST!, {});
-    } catch (error) {
-      console.log("Error connecting to MongoDB:" + error);
+      // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
+      await mongoose.connect(process.env.DBHOST!, {});
+      //await mongoose.connection.db.admin().command({ ping: 1 });
+      console.log(
+        "Pinged your deployment. You successfully connected to MongoDB!"
+      );
+    } catch {
+      // Ensures that the client will close when you finish/error
+      console.log("Error connecting to the database.");
     }
-
-    mongoose.connection.once("open", () =>
-      console.log("Connected succesfully to MongoDB")
-    );
   }
 
   /**

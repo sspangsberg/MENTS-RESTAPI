@@ -3,12 +3,11 @@ import { productModel } from "../models/productModel";
 import { ObjectId } from "mongodb";
 
 export class ProductService {
-
-/**
+  /**
    *
    * @returns
    */
-public async get(filterParam: Object): Promise<Array<Product>> {
+  public async get(filterParam: Object): Promise<Array<Product>> {
     try {
       let result: Array<Product> = await productModel.find(filterParam);
       return result;
@@ -19,18 +18,18 @@ public async get(filterParam: Object): Promise<Array<Product>> {
     }
   }
 
-
-
   /**
    *
    * @returns
    */
   public async create(newProducts: Array<Product>): Promise<Array<Product>> {
     try {
+      /*
       newProducts.map((p) => {
         const _id = new ObjectId(p._createdBy); // we need to manually convert the string to ObjectID
         p._createdBy = _id;
       });
+      */
 
       const result = await productModel.insertMany(newProducts);
       return result;

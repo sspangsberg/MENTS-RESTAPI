@@ -13,6 +13,7 @@ import Joi, { ValidationResult } from "joi";
 
 // registration
 export const registerUser = async (req: Request, res: Response) => {
+  
   // validate the user and password
   const { error } = validateUserRegistrationInfo(req.body);
 
