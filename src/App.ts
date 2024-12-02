@@ -53,6 +53,8 @@ export class App {
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,OPTIONS,PATCH,POST,DELETE');
       res.header('Access-Control-Allow-Headers', 'auth-token, Origin, X-Requested-With, Content-Type, Accept');
+      // test for credentials
+      res.header('Access-Control-Allow-Credentials', 'true');
       res.sendStatus(200);
     });
   }
