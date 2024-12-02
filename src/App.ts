@@ -43,19 +43,16 @@ export class App {
         origin: "*", // Allow requests from any origin
         // kw 29-nov-2024 - allow methods + headers + credentials
         methods: 'GET,HEAD,PUT,OPTIONS,PATCH,POST,DELETE',
-        allowedHeaders: ['auth-token', 'Origin', 'X-Requested-With', 'Content-Type', 'Accept'], // Allow specific headers
-        credentials: true,
+        allowedHeaders: ['auth-token', 'Origin', 'X-Requested-With', 'Content-Type', 'Accept'] // Allow specific headers
       })
     );
 
     // kw 2-dec-2024 - set the Access-Control-Allow-Origin header for preflight requests - console error 
-    this.app.options('*', (req, res) => {
+ /*    this.app.options('*', (req, res) => {
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,OPTIONS,PATCH,POST,DELETE');
       res.header('Access-Control-Allow-Headers', 'auth-token, Origin, X-Requested-With, Content-Type, Accept');
-      // test for credentials
-      res.header('Access-Control-Allow-Credentials', 'true');
       res.sendStatus(200);
-    });
+    }); */
   }
 }
