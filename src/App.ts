@@ -1,5 +1,5 @@
 // Imports
-import express, { Application } from "express";
+import express, { Application, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 
@@ -43,7 +43,7 @@ export class App {
   
     this.app.use(
       cors({
-        origin: (origin, callback) => {
+        origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
           // Allow requests with no origin (like mobile apps or curl requests)
           if (!origin) return callback(null, true);
           if (allowedOrigins.indexOf(origin) === -1) {
@@ -59,9 +59,9 @@ export class App {
     );
   
     // Manually set the Access-Control-Allow-Origin header for preflight requests
-    this.app.options('*', (req, res) => {
+    this.app.options('*', (req: Request, res: Response) => {
       const origin = req.headers.origin;
-      if (allowedOrigins.includes(origin)) {
+      if (origin && allowedOrigins.includes(origin)) {
         res.header('Access-Control-Allow-Origin', origin);
       }
       res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,OPTIONS,PATCH,POST,DELETE');
