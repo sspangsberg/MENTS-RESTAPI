@@ -38,14 +38,14 @@ export class App {
    *
    */
   private setupCors() {
- /*    this.app.use(
+    this.app.use(
       cors({
         origin: "*", // Allow requests from any origin
         // kw 29-nov-2024 - allow methods + headers + credentials
         methods: 'GET,HEAD,PUT,OPTIONS,PATCH,POST,DELETE',
         allowedHeaders: ['auth-token', 'Origin', 'X-Requested-With', 'Content-Type', 'Accept'] // Allow specific headers
       })
-    ); */
+    );
 
     // kw 2-dec-2024 - set the Access-Control-Allow-Origin header for preflight requests - console error 
     this.app.options('*', (req, res) => {
