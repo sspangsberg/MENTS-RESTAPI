@@ -22,10 +22,10 @@ export class App {
     this.app.use(bodyParser.json());
     
     // kw 28-nov-2024 - init CORS before defining Routes
-/*     this.setupCors();
+    this.setupCors();
     
     this.app.use("/api/", routes);
- */
+
 
 
     const PORT: Number = parseInt(process.env.PORT as string, 10) || 4000;
