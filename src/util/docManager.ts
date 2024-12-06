@@ -81,4 +81,3 @@ export function setupDocs(app: Application) {
     //const swaggerDocument = YAML.load("./docs/swagger.yaml");
     app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 }
-
