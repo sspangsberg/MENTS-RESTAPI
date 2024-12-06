@@ -1,61 +1,72 @@
-import { Request, Response } from "express";
-import { productModel } from "../models/productModel";
-import { ProductService } from "../services/ProductService";
-
-const pService = new ProductService();
+import { Request, Response } from 'express'
+import { productModel } from '../models/productModel'
 
 // CRUD routes
-export async function createProduct(req: Request, res: Response) {
-  let data = req.body;
 
-  try {
-    var result = await pService.create(data);
-    res.status(201).send({ data: result });
-  } catch (error) {
-    res.status(500).send({ message: error });
-  }
+/**
+ * Creates a new product based on the request body
+ * @param req
+ * @param res
+ */
+export async function createProduct(req: Request, res: Response) {
+
+    let data = req.body;
+
+    try {
+        const product = new productModel(data);
+        const result = await product.save();
+        res.status(201).send(result);
+    }
+    catch (error) {
+        res.status(500).send(
+            {
+                message: 'Error creating product.',
+                error: error
+            }
+        );
+    }
 }
 
 /**
- *
+ * Get all products
  * @param req
  * @param res
  */
 export async function getAllProducts(req: Request, res: Response) {
-  try {
-    var result = await pService.get({});
-    res.status(200).send(result);
-  } catch (error) {
-    res.status(500).send({ message: error });
-  }
+    try {
+        const result = await productModel.find({});
+        res.status(200).send(result);
+    } catch (error) {
+        res.status(500).send({ message: error });
+    }
 }
 
 /**
- *
+ * Get all products in stock
  * @param req
  * @param res
  */
 export async function getProductsInStock(req: Request, res: Response) {
-  try {
-    var result = await pService.get({ stock: { $gt: 0 } });
-    res.status(200).send(result);
-  } catch (error) {
-    res.status(500).send({ message: error });
-  }
+    try {
+        const result = await productModel.find({ stock: { $gt: 0 } });
+        res.status(200).send(result);
+    } catch (error) {
+        res.status(500).send({ message: error });
+    }
 }
 
 /**
- *
+ * Get specific product by id
  * @param req
  * @param res
  */
 export async function getProductById(req: Request, res: Response) {
-  try {
-    var result = await pService.get({ _id: req.params.id });
-    res.status(200).send(result);
-  } catch (error) {
-    res.status(500).send({ message: error });
-  }
+    try {
+        const result = await productModel.find({ _id: req.params.id });
+        res.status(200).send(result);
+    } catch (error) {
+        res.status(500).send({ message: error });
+    }
 }
 
 /**
@@ -64,59 +75,66 @@ export async function getProductById(req: Request, res: Response) {
  * @param res
  */
 export async function getProductsBasedOnQuery(req: Request, res: Response) {
-  const field = req.body.field;
-  const value = req.body.value;
+    const field = req.body.field;
+    const value = req.body.value;
 
-  try {
-    var result = await pService.get({ [field]: [value] });
-    res.status(200).send(result);
-  } catch (error) {
-    res.status(500).send({ message: error });
-  }
+    try {
+        const result = await productModel.find({ [field]: [value] });
+        res.status(200).send(result);
+    } catch (error) {
+        res.status(500).send({ message: error });
+    }
 }
 
-// Update specific product - put
+
+/**
+ * Update specific product by id
+ * @param req 
+ * @param res 
+ */
 export const updateProductById = (req: Request, res: Response) => {
-  const id = req.params.id;
+    const id = req.params.id;
 
-  productModel
-    .findByIdAndUpdate(id, req.body)
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message:
-            "Cannot update product with id=" +
-            id +
-            ". Maybe product was not found.",
-        });
-      } else {
-        res.send({ message: "Product was succesfully updated." });
-      }
-    })
-    .catch((err: string) => {
-      res.status(500).send({ message: "Error updating product with id=" + id });
-    });
-};
+    try {
+        const result = productModel.findByIdAndUpdate(id, req.body);
 
-// Delete specific product - delete
+        if (!result) {
+            res.status(404).send('Cannot update product with id=$(id)');
+        }
+        else { res.status(200).send('Product was succesfully updated.'); }
+    }
+    catch (error) {
+        res.status(500).send(
+            {
+                message: 'Error updating product with id=$(id)',
+                error: error
+            }
+        );
+    }
+}
+
+/**
+ * Delete specific product by id
+ * @param req 
+ * @param res 
+ */
 export const deleteProductById = (req: Request, res: Response) => {
-  const id = req.params.id;
+    const id = req.params.id;
 
-  productModel
-    .findByIdAndDelete(id)
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message:
-            "Cannot delete product with id=" +
-            id +
-            ". Maybe product was not found.",
-        });
-      } else {
-        res.send({ message: "Product was succesfully deleted." });
-      }
-    })
-    .catch((err: string) => {
-      res.status(500).send({ message: "Error delete product with id=" + id });
-    });
-};
+    try {
+        const result = productModel.findByIdAndDelete(id);
+
+        if (!result) {
+            res.status(404).send('Cannot delete product with id=$(id)');
+        }
+        else { res.status(200).send('Product was succesfully deleted.'); }
+    }
+    catch (error) {
+        res.status(500).send(
+            {
+                message: 'Error deleting product with id=$(id)',
+                error: error
+            }
+        );
+    }
+}

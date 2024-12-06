@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { Product } from "../interfaces/product";
 
 // Create a DB schema
-let productSchema = new Schema<Product>({
+const productSchema = new Schema<Product>({
   name: { type: String, required: true },
   description: { type: String },
   imageURL: { type: String, required: true },

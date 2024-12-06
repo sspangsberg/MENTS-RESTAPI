@@ -1,63 +1,70 @@
 {
-  "name": "men-restapi-s24",
-  "version": "1.0.0",
-  "description": "MongoDB-ExpressJS-NodeJS REST API",
-  "main": "./src/index.ts",
-  "scripts": {
-    "localdb": "cross-env NODE_ENV=local npx nodemon",
-    "remotedb": "cross-env NODE_ENV=remote npx nodemon",
-    "seed-local": "cross-env NODE_ENV=local npx ts-node ./src/util/dbSeeder.ts",
-    "seed-remote": "cross-env NODE_ENV=remote npx ts-node ./src/util/dbSeeder.ts",
-    "build": "rm -rf dist/ && tsc",
-    "test": "npx playwright test --reporter=list",
-    "report": "npx playwright test --reporter=html && npx playwright show-report"
-  },
-  "nodemonConfig": {
-    "verbose": false,
-    "watch": [
-      "src"
+    "name": "men-restapi-s24",
+    "version": "1.0.0",
+    "description": "MongoDB-ExpressJS-NodeJS REST API",
+    "main": "./src/index.ts",
+    "scripts": {
+        "lint": "eslint src/**/*.ts",
+        "format": "eslint src/**/*.ts --fix",
+        "localdb": "cross-env NODE_ENV=local npx nodemon",
+        "remotedb": "cross-env NODE_ENV=remote npx nodemon",
+        "seed-local": "cross-env NODE_ENV=local npx ts-node ./src/util/dbSeeder.ts",
+        "seed-remote": "cross-env NODE_ENV=remote npx ts-node ./src/util/dbSeeder.ts",
+        "build": "rm -rf dist/ && tsc",
+        "test": "npx playwright test --reporter=list",
+        "report": "npx playwright test --reporter=html && npx playwright show-report"
+    },
+    "nodemonConfig": {
+        "verbose": false,
+        "watch": [
+            "src"
+        ],
+        "ext": "js,ts",
+        "exec": "npx ts-node ./src/index.ts",
+        "ignore": [
+            "node_modules"
+        ]
+    },
+    "keywords": [
+        "mongodb",
+        "mongoose",
+        "node",
+        "express"
     ],
-    "ext": "js,ts",
-    "exec": "npx ts-node ./src/index.ts",
-    "ignore": [
-      "node_modules"
-    ]
-  },
-  "keywords": [
-    "mongodb",
-    "mongoose",
-    "node",
-    "express"
-  ],
-  "author": "smsj",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
-    "cross-env": "^7.0.3",
-    "dotenv-flow": "^4.0.1",
-    "express": "^4.18.2",
-    "joi": "^17.11.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.3.0",
-    "mongoose": "^8.0.3",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0",
-    "yamljs": "^0.3.0"
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.44.1",
-    "@types/bcrypt": "^5.0.2",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/joi": "^17.2.3",
-    "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^20.14.1",
-    "@types/swagger-jsdoc": "^6.0.4",
-    "@types/swagger-ui-express": "^4.1.6",
-    "@types/yamljs": "^0.2.34",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
-  }
+    "author": "smsj",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "body-parser": "^1.20.2",
+        "cors": "^2.8.5",
+        "cross-env": "^7.0.3",
+        "dotenv-flow": "^4.0.1",
+        "express": "^4.18.2",
+        "joi": "^17.11.0",
+        "jsonwebtoken": "^9.0.2",
+        "mongodb": "^6.3.0",
+        "mongoose": "^8.8.4",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.0",
+        "yamljs": "^0.3.0"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.44.1",
+        "@types/bcrypt": "^5.0.2",
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/joi": "^17.2.3",
+        "@types/jsonwebtoken": "^9.0.6",
+        "@types/node": "^20.14.1",
+        "@types/swagger-jsdoc": "^6.0.4",
+        "@types/swagger-ui-express": "^4.1.6",
+        "@types/yamljs": "^0.2.34",
+        "@typescript-eslint/eslint-plugin": "^8.17.0",
+        "@typescript-eslint/parser": "^8.17.0",
+        "eslint": "^9.16.0",
+        "globals": "^15.13.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.4.5",
+        "typescript-eslint": "^8.17.0"
+    }
 }

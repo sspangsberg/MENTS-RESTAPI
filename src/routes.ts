@@ -1,23 +1,21 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response } from 'express'
 import {
-  createProduct,
-  getAllProducts,
-  getProductById,
-  getProductsInStock,
-  getProductsBasedOnQuery,
-  updateProductById,
-  deleteProductById,
-} from "./controllers/productController";
+    createProduct,
+    getAllProducts,
+    getProductById,
+    getProductsInStock,
+    getProductsBasedOnQuery,
+    updateProductById,
+    deleteProductById,
+} from './controllers/productController'
 
-//import { ProductControllerC } from "./controllers/ProductControllerC";
-//
 import {
-  registerUser,
-  loginUser,
-  verifyToken,
-} from "./controllers/authController";
+    registerUser,
+    loginUser,
+    verifyToken,
+} from './controllers/authController'
 
-const router: Router = Router();
+const router: Router = Router()
 
 /**
  * @swagger
@@ -31,9 +29,9 @@ const router: Router = Router();
  *       200:
  *         description: Server up and running.
  */
-router.get("/", (req: Request, res: Response) => {
-  res.status(200).send({ message: "Welcome to the TypeScript MEN REST-API" });
-});
+router.get('/', (req: Request, res: Response) => {
+    res.status(200).send({ message: 'Welcome to the TypeScript MEN REST-API' })
+})
 
 /**
  * @swagger
@@ -62,7 +60,7 @@ router.get("/", (req: Request, res: Response) => {
  *                 _id:
  *                   type: string
  */
-router.post("/user/register", registerUser);
+router.post('/user/register', registerUser)
 
 /**
  * @swagger
@@ -96,7 +94,7 @@ router.post("/user/register", registerUser);
  *               password:
  *                 type: string
  */
-router.post("/user/login", loginUser);
+router.post('/user/login', loginUser)
 
 /**
  * @swagger
@@ -115,13 +113,15 @@ router.post("/user/login", loginUser);
  *           schema:
  *             $ref: "#/components/schemas/Product"
  *           example:
- *             name: "Test Product"
- *             description: "Test Product description"
- *             price: 10.95
- *             stock: 10
- *             status: false
- *             _createdBy: ""
- *
+ *             name: "Mr. Burns statue"
+ *             description: "The best and precious statue ever"
+ *             imageURL: "https://picsum.photos/500/500"
+ *             price: 10000.96
+ *             stock: 3
+ *             discount: false
+ *             discountPct: 0
+ *             isHidden: false
+ *             _createdBy: "6748771972ba527f3a17a313"
  *     responses:
  *       201:
  *         description: Product created succesfully
@@ -130,7 +130,7 @@ router.post("/user/login", loginUser);
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.post("/products", createProduct);
+router.post('/products', verifyToken, createProduct)
 
 /**
  * @swagger
@@ -150,7 +150,7 @@ router.post("/products", createProduct);
  *               items:
  *                 $ref: "#/components/schemas/Product"
  */
-router.get("/products", getAllProducts);
+router.get('/products', getAllProducts)
 
 /**
  * @swagger
@@ -170,7 +170,7 @@ router.get("/products", getAllProducts);
  *               items:
  *                 $ref: "#/components/schemas/Product"
  */
-router.get("/products/instock", getProductsInStock);
+router.get('/products/instock', getProductsInStock)
 
 /**
  * @swagger
@@ -201,7 +201,7 @@ router.get("/products/instock", getProductsInStock);
  *               items:
  *                 $ref: "#/components/schemas/Product"
  */
-router.post("/products/query", getProductsBasedOnQuery);
+router.post('/products/query', getProductsBasedOnQuery)
 
 /**
  * @swagger
@@ -228,7 +228,7 @@ router.post("/products/query", getProductsBasedOnQuery);
  *               items:
  *                 $ref: "#/components/schemas/Product"
  */
-router.get("/products/:id", getProductById);
+router.get('/products/:id', getProductById)
 
 /**
  * @swagger
@@ -262,7 +262,7 @@ router.get("/products/:id", getProductById);
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.put("/products/:id", verifyToken, updateProductById);
+router.put('/products/:id', verifyToken, updateProductById)
 
 /**
  * @swagger
@@ -290,6 +290,6 @@ router.put("/products/:id", verifyToken, updateProductById);
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.delete("/products/:id", deleteProductById);
+router.delete('/products/:id', verifyToken, deleteProductById)
 
-export default router;
+export default router

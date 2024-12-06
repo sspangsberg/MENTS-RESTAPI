@@ -65,7 +65,7 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 
   // user exist - check for password correctness
-  const validPassword: Boolean = await bcrypt.compare(
+  const validPassword: boolean = await bcrypt.compare(
     req.body.password,
     user.password
   );
@@ -110,7 +110,7 @@ export const verifyToken = (
   try {
     jwt.verify(token, process.env.TOKEN_SECRET as string);
     next();
-  } catch (error) {
+  } catch {
     res.status(400).json({ error: "Token is not valid." });
   }
 };

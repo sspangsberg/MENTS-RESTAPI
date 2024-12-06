@@ -6,10 +6,10 @@ export interface Product extends Document {
   name: string;
   description: string;
   imageURL: string;
-  price: Number;
-  stock: Number;
-  discount: Boolean;
-  discountPct: Number;
-  isHidden: Boolean;
+  price: number;
+  stock: number;
+  discount: boolean;
+  discountPct: number;
+  isHidden: boolean;
   _createdBy: User["id"];
 }

@@ -1,4 +1,4 @@
-import { App } from "./App";
+import { startServer } from "./App";
 
-new App().startServer();
+startServer();
 
