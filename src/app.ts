@@ -6,7 +6,7 @@ import dotenvFlow from "dotenv-flow";
 
 // Project imports
 import routes from "./routes";
-import { connect as dbconnect } from "./util/DBManager";
+import { connect as dbconnect } from "./util/dbManager";
 import { setupDocs } from "./util/docManager";
 
 dotenvFlow.config();
