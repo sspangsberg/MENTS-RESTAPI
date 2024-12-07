@@ -10,7 +10,7 @@ import { productModel } from '../models/productModel'
  */
 export async function createProduct(req: Request, res: Response) {
 
-    let data = req.body;
+    const data = req.body;
 
     try {
         const product = new productModel(data);
@@ -92,21 +92,21 @@ export async function getProductsBasedOnQuery(req: Request, res: Response) {
  * @param req 
  * @param res 
  */
-export const updateProductById = (req: Request, res: Response) => {
+export async function updateProductById(req: Request, res: Response) {
     const id = req.params.id;
 
     try {
-        const result = productModel.findByIdAndUpdate(id, req.body);
+        const result = await productModel.findByIdAndUpdate(id, req.body);
 
         if (!result) {
-            res.status(404).send('Cannot update product with id=$(id)');
+            res.status(404).send('Cannot update product with id=' + id);
         }
         else { res.status(200).send('Product was succesfully updated.'); }
     }
     catch (error) {
         res.status(500).send(
             {
-                message: 'Error updating product with id=$(id)',
+                message: 'Error updating product with id=' + id,
                 error: error
             }
         );
@@ -118,21 +118,22 @@ export const updateProductById = (req: Request, res: Response) => {
  * @param req 
  * @param res 
  */
-export const deleteProductById = (req: Request, res: Response) => {
+export async function deleteProductById(req: Request, res: Response) {
+
     const id = req.params.id;
 
     try {
-        const result = productModel.findByIdAndDelete(id);
+        const result = await productModel.findByIdAndDelete(id);
 
         if (!result) {
-            res.status(404).send('Cannot delete product with id=$(id)');
+            res.status(404).send('Cannot delete product with id=' + id);
         }
         else { res.status(200).send('Product was succesfully deleted.'); }
     }
     catch (error) {
         res.status(500).send(
             {
-                message: 'Error deleting product with id=$(id)',
+                message: 'Error deleting product with id=' + id,
                 error: error
             }
         );
