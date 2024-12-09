@@ -130,7 +130,7 @@ router.post('/user/login', loginUser)
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.post('/products', verifyToken, createProduct)
+router.post('/products', createProduct)
 
 /**
  * @swagger

@@ -1,7 +1,5 @@
-import { ObjectId } from "mongodb";
-
 export interface User extends Document {
-  id: ObjectId;
+  id: string;
   name: string;
   email: string;
   password: string;

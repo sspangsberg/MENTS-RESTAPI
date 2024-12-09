@@ -1,8 +1,8 @@
-import { ObjectId } from "mongodb";
+// import { ObjectId } from "mongodb";
 import { User } from "./user";
 
 export interface Product extends Document {
-  id: ObjectId;
+  id: string;
   name: string;
   description: string;
   imageURL: string;

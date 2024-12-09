@@ -74,7 +74,7 @@ export const loginUser = async (req: Request, res: Response) => {
   if (!validPassword)
     return res.status(400).json({ error: "Password is wrong. " });
 
-  const userId: ObjectId = user.id;
+  const userId: string = user.id;
 
   // create authentication token with username and id
   const token: string = jwt.sign(
