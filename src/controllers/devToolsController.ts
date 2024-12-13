@@ -4,12 +4,17 @@ import {
 } from "express";
 
 import cron from "node-cron";
+import https from "https";
 
 const timeOutSeconds = 60 * 60 * 2;
 
-const task = cron.schedule('* * * * *', () => {
-  console.log('will execute every minute until stopped');
-  
+const task = cron.schedule('*/5 * * * *', () => {
+
+  https.get('https://ments-restapi.onrender.com/api/docs/', () => {
+    console.log('Pinged the server');
+  });
+
+
 });
 
 export async function startCron(req: Request, res: Response) {
