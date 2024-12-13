@@ -12,7 +12,6 @@ import { setupDocs } from "./util/docManager";
 dotenvFlow.config();
 const app: Application = express();
 
-
 /**
  *
  */

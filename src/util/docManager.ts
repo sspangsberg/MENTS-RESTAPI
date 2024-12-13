@@ -68,16 +68,16 @@ export function setupDocs(app: Application) {
                 },
             },
         },
-    }
+    };
 
     const options = {
         swaggerDefinition,
         // Paths to files containing OpenAPI definitions
         apis: ['**/*.ts'],
-    }
+    };
 
-    const swaggerSpec = swaggerJSDoc(options)
+    const swaggerSpec = swaggerJSDoc(options);
 
     //const swaggerDocument = YAML.load("./docs/swagger.yaml");
-    app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+    app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }

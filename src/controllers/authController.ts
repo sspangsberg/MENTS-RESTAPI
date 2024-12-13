@@ -1,19 +1,27 @@
+// imports
 import {
   type Request,
   type Response,
   type NextFunction
 } from "express";
-import { userModel } from "../models/userModel";
-import { User } from "../interfaces/user";
 
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { ObjectId } from "mongodb";
 import Joi, { ValidationResult } from "joi";
 
-// registration
-export const registerUser = async (req: Request, res: Response) => {
-  
+// Project imports
+import { userModel } from "../models/userModel";
+import { User } from "../interfaces/user";
+
+
+/**
+ * Register a new user
+ * @param req 
+ * @param res 
+ * @returns 
+ */
+export async function registerUser(req: Request, res: Response) {
+
   // validate the user and password
   const { error } = validateUserRegistrationInfo(req.body);
 
@@ -47,8 +55,13 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-// login
-export const loginUser = async (req: Request, res: Response) => {
+/**
+ * Login an existing user
+ * @param req 
+ * @param res 
+ * @returns 
+ */
+export async function loginUser(req: Request, res: Response) {
   // validate user login inf
   const { error } = validateUserLoginInfo(req.body);
 
@@ -85,7 +98,7 @@ export const loginUser = async (req: Request, res: Response) => {
       id: userId,
     },
     // TOKEN_SECRET,
-    process.env.TOKEN_SECRET!,
+    process.env.TOKEN_SECRET as string,
     // EXPIRATION
     { expiresIn: process.env.JWT_EXPIRES_IN }
   );
@@ -97,12 +110,14 @@ export const loginUser = async (req: Request, res: Response) => {
   });
 };
 
-// logic to verify our token (JWT)
-export const verifyToken = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+/**
+ * Middleware logic to verify our token (JWT)
+ * @param req 
+ * @param res 
+ * @param next 
+ * @returns 
+ */
+export function verifyToken(req: Request, res: Response, next: NextFunction) {
   const token = req.header("auth-token");
 
   if (!token) return res.status(401).json({ error: "Access Denied." });
@@ -128,8 +143,12 @@ const verifyRefresh = (email: string, refreshToken: string) => {
 }
 */
 
-// validating registration
-const validateUserRegistrationInfo = (data: User): ValidationResult => {
+/**
+ * Validating registration
+ * @param data 
+ * @returns 
+ */
+export function validateUserRegistrationInfo(data: User): ValidationResult {
   const schema = Joi.object({
     name: Joi.string().min(6).max(255).required(),
     email: Joi.string().min(6).max(255).required(),
@@ -139,8 +158,12 @@ const validateUserRegistrationInfo = (data: User): ValidationResult => {
   return schema.validate(data);
 };
 
-// validating login
-const validateUserLoginInfo = (data: User): ValidationResult => {
+/**
+ * Validating login
+ * @param data 
+ * @returns 
+ */
+export function validateUserLoginInfo(data: User): ValidationResult {
   const schema = Joi.object({
     email: Joi.string().min(6).max(255).required(),
     password: Joi.string().min(6).max(255).required(),

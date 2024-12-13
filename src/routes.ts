@@ -1,4 +1,6 @@
-import { Router, Request, Response } from 'express'
+import { Router, Request, Response } from 'express';
+
+// Project imports
 import {
     createProduct,
     getAllProducts,
@@ -7,15 +9,17 @@ import {
     getProductsBasedOnQuery,
     updateProductById,
     deleteProductById,
-} from './controllers/productController'
+} from './controllers/productController';
 
 import {
     registerUser,
     loginUser,
     verifyToken,
-} from './controllers/authController'
+} from './controllers/authController';
 
-const router: Router = Router()
+import { startCron, stopCron } from './controllers/devToolsController';
+
+const router: Router = Router();
 
 /**
  * @swagger
@@ -30,8 +34,44 @@ const router: Router = Router()
  *         description: Server up and running.
  */
 router.get('/', (req: Request, res: Response) => {
-    res.status(200).send({ message: 'Welcome to the TypeScript MEN REST-API' })
+    res.status(200).send({ message: 'Welcome to the TypeScript MEN REST-API' });
 })
+
+/**
+ * @swagger
+ * /start-cron:
+ *   get:
+ *     tags:
+ *       - Start Cron Jobs
+ *     summary: Starts the cron job that keep render alive
+ *     description: Starts the cron job that keep render alive
+ *     responses:
+ *       200:
+ *         description: Response from the cron job
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array               
+ */
+router.get('/start-cron', startCron);
+
+/**
+ * @swagger
+ * /stop-cron:
+ *   get:
+ *     tags:
+ *       - Stops Cron Jobs
+ *     summary: Stops the cron job that keep render alive
+ *     description: Stops the cron job that keep render alive
+ *     responses:
+ *       200:
+ *         description: Response from the cron job
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array               
+ */
+router.get('/stop-cron', stopCron);
 
 /**
  * @swagger
@@ -60,7 +100,7 @@ router.get('/', (req: Request, res: Response) => {
  *                 _id:
  *                   type: string
  */
-router.post('/user/register', registerUser)
+router.post('/user/register', registerUser);
 
 /**
  * @swagger
@@ -94,7 +134,7 @@ router.post('/user/register', registerUser)
  *               password:
  *                 type: string
  */
-router.post('/user/login', loginUser)
+router.post('/user/login', loginUser);
 
 /**
  * @swagger
@@ -130,7 +170,7 @@ router.post('/user/login', loginUser)
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.post('/products', createProduct)
+router.post('/products', createProduct);
 
 /**
  * @swagger
@@ -150,7 +190,7 @@ router.post('/products', createProduct)
  *               items:
  *                 $ref: "#/components/schemas/Product"
  */
-router.get('/products', getAllProducts)
+router.get('/products', getAllProducts);
 
 /**
  * @swagger
@@ -170,7 +210,7 @@ router.get('/products', getAllProducts)
  *               items:
  *                 $ref: "#/components/schemas/Product"
  */
-router.get('/products/instock', getProductsInStock)
+router.get('/products/instock', getProductsInStock);
 
 /**
  * @swagger
@@ -201,7 +241,7 @@ router.get('/products/instock', getProductsInStock)
  *               items:
  *                 $ref: "#/components/schemas/Product"
  */
-router.post('/products/query', getProductsBasedOnQuery)
+router.post('/products/query', getProductsBasedOnQuery);
 
 /**
  * @swagger
@@ -228,7 +268,7 @@ router.post('/products/query', getProductsBasedOnQuery)
  *               items:
  *                 $ref: "#/components/schemas/Product"
  */
-router.get('/products/:id', getProductById)
+router.get('/products/:id', getProductById);
 
 /**
  * @swagger
@@ -262,7 +302,7 @@ router.get('/products/:id', getProductById)
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.put('/products/:id', verifyToken, updateProductById)
+router.put('/products/:id', verifyToken, updateProductById);
 
 /**
  * @swagger
@@ -290,6 +330,8 @@ router.put('/products/:id', verifyToken, updateProductById)
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.delete('/products/:id', verifyToken, deleteProductById)
+router.delete('/products/:id', verifyToken, deleteProductById);
 
-export default router
+
+
+export default router;

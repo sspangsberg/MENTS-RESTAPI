@@ -11,7 +11,7 @@ import { productModel } from '../models/productModel'
 export async function createProduct(req: Request, res: Response) {
 
     const data = req.body;
-
+    
     try {
         const product = new productModel(data);
         const result = await product.save();

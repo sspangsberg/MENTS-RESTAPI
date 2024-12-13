@@ -1,12 +1,17 @@
-import { productModel } from "../models/productModel";
-import { userModel } from "../models/userModel";
-import { connect as dbconnect } from "./dbManager";
 import bcrypt from "bcrypt";
 import dotenvFlow from "dotenv-flow";
 
+// Project import
+import { productModel } from "../models/productModel";
+import { userModel } from "../models/userModel";
+import { connect as dbconnect } from "./dbManager";
+
 dotenvFlow.config();
 
-export const seed = async () => {
+/**
+ * Seed the database with data
+ */
+export async function seed() {
   try {
     dbconnect();
     
@@ -19,14 +24,20 @@ export const seed = async () => {
   }
 };
 
-const deleteAllData = async () => {
+/**
+ * Delete all data from the database
+ */
+export async function deleteAllData() {
   await productModel.deleteMany();
   await userModel.deleteMany();
 
   console.log("Cleared data successfully...");
 };
 
-const seedData = async () => {
+/**
+ * Seed data into the database
+ */
+export async function seedData() {
   // hash the password
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash("12345678", salt);
