@@ -9,6 +9,8 @@ import https from "https";
 let durationMinutes = 120;
 const MINUTES_DELTA = 5;
 const cronPattern = "*/" + MINUTES_DELTA + " * * * *";
+const URL = "https://ments-restapi.onrender.com/api/docs/";
+
 
 /**
  * 
@@ -18,9 +20,10 @@ const task = cron.schedule(cronPattern, () => {
   /**
    * 
    */
-  https.get('https://ments-restapi.onrender.com/api/docs/', () => {
+  https.get(URL, () => {
     console.log('Pinged the server');
-    durationMinutes =- MINUTES_DELTA;
+    durationMinutes = durationMinutes - MINUTES_DELTA;
+    console.log("Minutes Left: ", durationMinutes);
 
     if (durationMinutes <= 0) {
       task.stop();
@@ -38,7 +41,6 @@ const task = cron.schedule(cronPattern, () => {
 export async function startCron(req: Request, res: Response) {
 
   try {
-
     task.start();
 
     res.status(200).send("Started cron-job from active route call");
