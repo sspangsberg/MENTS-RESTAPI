@@ -7,7 +7,8 @@ import cron from "node-cron";
 import https from "https";
 
 let durationMinutes = 120;
-const cronPattern = "*/5 * * * *";
+const MINUTES_DELTA = 5;
+const cronPattern = "*/" + MINUTES_DELTA + " * * * *";
 
 /**
  * 
@@ -19,7 +20,7 @@ const task = cron.schedule(cronPattern, () => {
    */
   https.get('https://ments-restapi.onrender.com/api/docs/', () => {
     console.log('Pinged the server');
-    durationMinutes--;
+    durationMinutes =- MINUTES_DELTA;
 
     if (durationMinutes <= 0) {
       task.stop();
