@@ -24,6 +24,7 @@ const task = cron.schedule(cronPattern, () => {
     if (durationMinutes <= 0) {
       task.stop();
       console.log('Stopped the cron job due to inactivity');
+      durationMinutes = 120;
     }
   });
 });
