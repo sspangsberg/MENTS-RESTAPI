@@ -1,8 +1,8 @@
 // imports
 import {
-  type Request,
-  type Response,
-  type NextFunction
+    type Request,
+    type Response,
+    type NextFunction
 } from "express";
 
 import jwt from "jsonwebtoken";
@@ -12,7 +12,7 @@ import Joi, { ValidationResult } from "joi";
 // Project imports
 import { userModel } from "../models/userModel";
 import { User } from "../interfaces/user";
-
+import { connect, disconnect } from '../repository/database';
 
 /**
  * Register a new user
@@ -22,37 +22,43 @@ import { User } from "../interfaces/user";
  */
 export async function registerUser(req: Request, res: Response) {
 
-  // validate the user and password
-  const { error } = validateUserRegistrationInfo(req.body);
+    try {
+        // validate the user and password
+        const { error } = validateUserRegistrationInfo(req.body);
 
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
 
-  // check if the email is already registered
-  const emailExist = await userModel.findOne({ email: req.body.email });
+        await connect();
 
-  if (emailExist) {
-    return res.status(400).json({ error: "Email already exists. " });
-  }
+        // check if the email is already registered
+        const emailExist = await userModel.findOne({ email: req.body.email });
 
-  // has the password
-  const salt = await bcrypt.genSalt(10);
-  const password = await bcrypt.hash(req.body.password, salt);
+        if (emailExist) {
+            return res.status(400).json({ error: "Email already exists. " });
+        }
 
-  // create a user object and save in the DB
-  const userObject = new userModel({
-    name: req.body.name,
-    email: req.body.email,
-    password,
-  });
+        // has the password
+        const salt = await bcrypt.genSalt(10);
+        const password = await bcrypt.hash(req.body.password, salt);
 
-  try {
-    const savedUser = await userObject.save();
-    res.json({ error: null, data: savedUser._id });
-  } catch (error) {
-    res.status(400).json({ error });
-  }
+        // create a user object and save in the DB
+        const userObject = new userModel({
+            name: req.body.name,
+            email: req.body.email,
+            password,
+        });
+
+        const savedUser = await userObject.save();
+        res.status(200).json({ error: null, data: savedUser._id });
+
+    } catch {
+        res.status(500).send("Error registering user.");
+    }
+    finally {
+        await disconnect();
+    }
 };
 
 /**
@@ -62,52 +68,64 @@ export async function registerUser(req: Request, res: Response) {
  * @returns 
  */
 export async function loginUser(req: Request, res: Response) {
-  // validate user login inf
-  const { error } = validateUserLoginInfo(req.body);
 
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
+    try {
 
-  // if login info is valid, find the user
-  const user: User | null = await userModel.findOne({ email: req.body.email });
+        // validate user login inf
+        const { error } = validateUserLoginInfo(req.body);
 
-  // throw error if email is wrong (user does not exist in DB)
-  if (!user) {
-    return res.status(400).json({ error: "Email is wrong. " });
-  }
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
 
-  // user exist - check for password correctness
-  const validPassword: boolean = await bcrypt.compare(
-    req.body.password,
-    user.password
-  );
+        await connect();
 
-  // throw error if password is wrong
-  if (!validPassword)
-    return res.status(400).json({ error: "Password is wrong. " });
+        // if login info is valid, find the user
+        const user: User | null = await userModel.findOne({ email: req.body.email });
 
-  const userId: string = user.id;
+        // throw error if email is wrong (user does not exist in DB)
+        if (!user) {
+            return res.status(400).json({ error: "Email is wrong. " });
+        }
 
-  // create authentication token with username and id
-  const token: string = jwt.sign(
-    // payload
-    {
-      name: user.name,
-      email: user.email,
-      id: userId,
-    },
-    // TOKEN_SECRET,
-    process.env.TOKEN_SECRET as string,
-    // EXPIRATION
-    { expiresIn: process.env.JWT_EXPIRES_IN }
-  );
+        // user exist - check for password correctness
+        const validPassword: boolean = await bcrypt.compare(
+            req.body.password,
+            user.password
+        );
 
-  // attach auth token to header
-  res.header("auth-token", token).json({
-    error: null,
-    data: { userId, token },
-  });
+        // throw error if password is wrong
+        if (!validPassword)
+            return res.status(400).json({ error: "Password is wrong. " });
+
+        const userId: string = user.id;
+
+        // create authentication token with username and id
+        const token: string = jwt.sign(
+            // payload
+            {
+                name: user.name,
+                email: user.email,
+                id: userId,
+            },
+            // TOKEN_SECRET,
+            process.env.TOKEN_SECRET as string,
+            // EXPIRATION
+            { expiresIn: process.env.JWT_EXPIRES_IN }
+        );
+
+        // attach auth token to header
+        res.header("auth-token", token).json({
+            error: null,
+            data: { userId, token },
+        });
+    }
+    catch {
+        res.status(500).send("Error logging in user.");
+    }
+    finally {
+        await disconnect();
+    }
 };
 
 /**
@@ -118,28 +136,28 @@ export async function loginUser(req: Request, res: Response) {
  * @returns 
  */
 export function verifyToken(req: Request, res: Response, next: NextFunction) {
-  const token = req.header("auth-token");
+    const token = req.header("auth-token");
 
-  if (!token) return res.status(401).json({ error: "Access Denied." });
+    if (!token) return res.status(400).json({ error: "Access Denied." });
 
-  try {
-    jwt.verify(token, process.env.TOKEN_SECRET as string);
-    next();
-  } catch {
-    res.status(400).json({ error: "Token is not valid." });
-  }
+    try {
+        jwt.verify(token, process.env.TOKEN_SECRET as string);
+        next();
+    } catch {
+        res.status(401).send("Invalid Token.");
+    }
 };
 
 
 /*
 // logic to verify whether a refresh token and its corresponding email is valid
 const verifyRefresh = (email: string, refreshToken: string) => {
-    try {
-        const decoded = jwt.verify(refreshToken, process.env.TOKEN_SECRET as string);
-        return <any>decoded.email === email;
-    } catch (error) {
-        return false;
-    }
+        try {
+                const decoded = jwt.verify(refreshToken, process.env.TOKEN_SECRET as string);
+                return <any>decoded.email === email;
+        } catch (error) {
+                return false;
+        }
 }
 */
 
@@ -149,13 +167,13 @@ const verifyRefresh = (email: string, refreshToken: string) => {
  * @returns 
  */
 export function validateUserRegistrationInfo(data: User): ValidationResult {
-  const schema = Joi.object({
-    name: Joi.string().min(6).max(255).required(),
-    email: Joi.string().min(6).max(255).required(),
-    password: Joi.string().min(6).max(255).required(),
-  });
+    const schema = Joi.object({
+        name: Joi.string().min(6).max(255).required(),
+        email: Joi.string().min(6).max(255).required(),
+        password: Joi.string().min(6).max(255).required(),
+    });
 
-  return schema.validate(data);
+    return schema.validate(data);
 };
 
 /**
@@ -164,10 +182,10 @@ export function validateUserRegistrationInfo(data: User): ValidationResult {
  * @returns 
  */
 export function validateUserLoginInfo(data: User): ValidationResult {
-  const schema = Joi.object({
-    email: Joi.string().min(6).max(255).required(),
-    password: Joi.string().min(6).max(255).required(),
-  });
+    const schema = Joi.object({
+        email: Joi.string().min(6).max(255).required(),
+        password: Joi.string().min(6).max(255).required(),
+    });
 
-  return schema.validate(data);
+    return schema.validate(data);
 };

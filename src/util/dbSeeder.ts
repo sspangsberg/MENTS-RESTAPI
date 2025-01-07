@@ -4,7 +4,7 @@ import dotenvFlow from "dotenv-flow";
 // Project import
 import { productModel } from "../models/productModel";
 import { userModel } from "../models/userModel";
-import { connect as dbconnect } from "./dbManager";
+import { connect, disconnect } from "../repository/database";
 
 dotenvFlow.config();
 
@@ -13,14 +13,17 @@ dotenvFlow.config();
  */
 export async function seed() {
   try {
-    dbconnect();
-    
+    await connect();
+
     await deleteAllData();
     await seedData();
     console.log("Seeding process completed successfully...");
     process.exit();
   } catch (err) {
     console.log("Error Seeding data." + err);
+  }
+  finally {
+    await disconnect();
   }
 };
 
@@ -71,7 +74,7 @@ export async function seedData() {
       description: "Product #2 description",
       imageURL: "https://picsum.photos/500/500",
       price: 100.96,
-      stock: 15,
+      stock: 0,
       discount: true,
       discountPct: 25,
       isHidden: false,
@@ -93,7 +96,7 @@ export async function seedData() {
       description: "Product #4 description",
       imageURL: "https://picsum.photos/500/500",
       price: 594.91,
-      stock: 15,
+      stock: 0,
       discount: false,
       discountPct: 0,
       isHidden: false,

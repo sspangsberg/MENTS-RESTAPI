@@ -332,6 +332,4 @@ router.put('/products/:id', verifyToken, updateProductById);
  */
 router.delete('/products/:id', verifyToken, deleteProductById);
 
-
-
 export default router;

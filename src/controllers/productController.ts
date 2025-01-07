@@ -1,29 +1,28 @@
 import { Request, Response } from 'express'
 import { productModel } from '../models/productModel'
-
-// CRUD routes
+import { connect, disconnect } from '../repository/database';
 
 /**
  * Creates a new product based on the request body
  * @param req
  * @param res
  */
-export async function createProduct(req: Request, res: Response) {
+export async function createProduct(req: Request, res: Response): Promise<void> {
 
     const data = req.body;
-    
+
     try {
+        await connect();
+
         const product = new productModel(data);
         const result = await product.save();
         res.status(201).send(result);
     }
-    catch (error) {
-        res.status(500).send(
-            {
-                message: 'Error creating product.',
-                error: error
-            }
-        );
+    catch {
+        res.status(500).send("Error creating product.");
+    }
+    finally {
+        await disconnect();
     }
 }
 
@@ -34,10 +33,27 @@ export async function createProduct(req: Request, res: Response) {
  */
 export async function getAllProducts(req: Request, res: Response) {
     try {
+        await connect();
         const result = await productModel.find({});
         res.status(200).send(result);
-    } catch (error) {
-        res.status(500).send({ message: error });
+    }
+    catch // (err) // advanced error handling
+    {
+        // simple error handling
+        res.status(500).send("Error retrieving products.");
+        /*
+        // advanced error handling
+        if (err instanceof Error) {
+            res.status(500).send(
+                {
+                    message: 'Error retrieving products.',
+                    error: err.message
+                }
+            );
+        */
+    }
+    finally {
+        await disconnect();
     }
 }
 
@@ -48,10 +64,14 @@ export async function getAllProducts(req: Request, res: Response) {
  */
 export async function getProductsInStock(req: Request, res: Response) {
     try {
+        await connect();
         const result = await productModel.find({ stock: { $gt: 0 } });
         res.status(200).send(result);
-    } catch (error) {
-        res.status(500).send({ message: error });
+    } catch {
+        res.status(500).send("Error retrieving products in stock.");
+    }
+    finally {
+        await disconnect();
     }
 }
 
@@ -62,10 +82,14 @@ export async function getProductsInStock(req: Request, res: Response) {
  */
 export async function getProductById(req: Request, res: Response) {
     try {
+        await connect();
         const result = await productModel.find({ _id: req.params.id });
         res.status(200).send(result);
-    } catch (error) {
-        res.status(500).send({ message: error });
+    } catch {
+        res.status(500).send("Error retrieving product with id=" + req.params.id);
+    }
+    finally {
+        await disconnect();
     }
 }
 
@@ -79,13 +103,16 @@ export async function getProductsBasedOnQuery(req: Request, res: Response) {
     const value = req.body.value;
 
     try {
+        await connect();
         const result = await productModel.find({ [field]: [value] });
         res.status(200).send(result);
-    } catch (error) {
-        res.status(500).send({ message: error });
+    } catch {
+        res.status(500).send("Error retrieving products based on query.");
+    }
+    finally {
+        await disconnect();
     }
 }
-
 
 /**
  * Update specific product by id
@@ -96,6 +123,7 @@ export async function updateProductById(req: Request, res: Response) {
     const id = req.params.id;
 
     try {
+        await connect();
         const result = await productModel.findByIdAndUpdate(id, req.body);
 
         if (!result) {
@@ -103,13 +131,11 @@ export async function updateProductById(req: Request, res: Response) {
         }
         else { res.status(200).send('Product was succesfully updated.'); }
     }
-    catch (error) {
-        res.status(500).send(
-            {
-                message: 'Error updating product with id=' + id,
-                error: error
-            }
-        );
+    catch {
+        res.status(500).send('Error updating product with id=' + id);
+    }
+    finally {
+        await disconnect();
     }
 }
 
@@ -123,6 +149,7 @@ export async function deleteProductById(req: Request, res: Response) {
     const id = req.params.id;
 
     try {
+        await connect();
         const result = await productModel.findByIdAndDelete(id);
 
         if (!result) {
@@ -130,12 +157,10 @@ export async function deleteProductById(req: Request, res: Response) {
         }
         else { res.status(200).send('Product was succesfully deleted.'); }
     }
-    catch (error) {
-        res.status(500).send(
-            {
-                message: 'Error deleting product with id=' + id,
-                error: error
-            }
-        );
+    catch {
+        res.status(500).send('Error deleting product with id=' + id);
+    }
+    finally {
+        await disconnect();
     }
 }
