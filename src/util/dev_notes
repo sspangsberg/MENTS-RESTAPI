@@ -1,4 +1,3 @@
-
 // CHATGPT test. Cant use a wildcard for the origin when credentials are set to true . ie origin: '*' - works if frontend has credentials: false
 /*   private setupCors() {
     const allowedOrigins = ['http://localhost:5173', 'http://your-other-origin.com']; // Add other allowed origins here

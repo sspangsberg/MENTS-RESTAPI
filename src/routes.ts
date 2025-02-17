@@ -6,16 +6,16 @@ import {
     getAllProducts,
     getProductById,
     getProductsInStock,
-    getProductsBasedOnQuery,
+    getProductsByQuery,
     updateProductById,
     deleteProductById,
 } from './controllers/productController';
 
-import {
-    registerUser,
-    loginUser,
-    verifyToken,
-} from './controllers/authController';
+// middlewares
+import { validateUserMiddleware, verifyTokenMiddleware } from './middlewares/authUserMiddleware';
+
+// controllers
+import { registerUser, loginUser } from './controllers/authController';
 
 import { startCron, stopCron } from './controllers/devToolsController';
 
@@ -100,7 +100,7 @@ router.get('/stop-cron', stopCron);
  *                 _id:
  *                   type: string
  */
-router.post('/user/register', registerUser);
+router.post('/user/register', validateUserMiddleware, registerUser);
 
 /**
  * @swagger
@@ -134,7 +134,7 @@ router.post('/user/register', registerUser);
  *               password:
  *                 type: string
  */
-router.post('/user/login', loginUser);
+router.post('/user/login', validateUserMiddleware, loginUser);
 
 /**
  * @swagger
@@ -170,7 +170,7 @@ router.post('/user/login', loginUser);
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.post('/products', createProduct);
+router.post('/products', verifyTokenMiddleware, createProduct);
 
 /**
  * @swagger
@@ -214,23 +214,25 @@ router.get('/products/instock', getProductsInStock);
 
 /**
  * @swagger
- * /products/query:
- *   post:
+ * /products/query/{field}/{value}:
+ *   get:
  *     tags:
  *       - Product Routes
  *     summary: Retrieves all Products based on a specified query
  *     description:
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               field:
- *                 type: string
- *               value:
- *                 type: string
+ *     parameters:
+ *       - in: path
+ *         name: field
+ *         required: true
+ *         description: The field we want to query
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: value
+ *         required: true
+ *         description: The value of the field
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: A list of Product JSON objects in an array.
@@ -241,7 +243,7 @@ router.get('/products/instock', getProductsInStock);
  *               items:
  *                 $ref: "#/components/schemas/Product"
  */
-router.post('/products/query', getProductsBasedOnQuery);
+router.get('/products/query/:field/:value', getProductsByQuery);
 
 /**
  * @swagger
@@ -302,7 +304,7 @@ router.get('/products/:id', getProductById);
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.put('/products/:id', verifyToken, updateProductById);
+router.put('/products/:id', verifyTokenMiddleware, updateProductById);
 
 /**
  * @swagger
@@ -330,6 +332,6 @@ router.put('/products/:id', verifyToken, updateProductById);
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.delete('/products/:id', verifyToken, deleteProductById);
+router.delete('/products/:id', verifyTokenMiddleware, deleteProductById);
 
 export default router;

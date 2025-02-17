@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "allowJs": true,
+    "allowJs": false,
+    "checkJs": false,
     "target": "es2016",
     "module": "commonjs",
     "moduleResolution": "node",

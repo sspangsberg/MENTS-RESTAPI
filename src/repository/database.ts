@@ -45,7 +45,7 @@ export async function disconnect() {
 
     try {
         await mongoose.disconnect();
-        console.log(mongoose.connections.length);
+        //console.log(mongoose.connections.length);
     }
     catch (error) {
         console.log("Database connection closed." + error);

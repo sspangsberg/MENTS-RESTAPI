@@ -7,7 +7,7 @@ import { connect, disconnect } from '../repository/database';
  * @param req
  * @param res
  */
-export async function createProduct(req: Request, res: Response): Promise<void> {
+export async function createProduct(req: Request, res: Response) {
 
     const data = req.body;
 
@@ -36,6 +36,7 @@ export async function getAllProducts(req: Request, res: Response) {
         await connect();
         const result = await productModel.find({});
         res.status(200).send(result);
+
     }
     catch // (err) // advanced error handling
     {
@@ -94,20 +95,24 @@ export async function getProductById(req: Request, res: Response) {
 }
 
 /**
- *
- * @param req
- * @param res
+ * Retrieves a product by its id from the data sources
+ * @param req 
+ * @param res 
  */
-export async function getProductsBasedOnQuery(req: Request, res: Response) {
-    const field = req.body.field;
-    const value = req.body.value;
+export async function getProductsByQuery(req: Request, res: Response) {
+
+    const field = req.params.field;
+    const value = req.params.value;
 
     try {
         await connect();
-        const result = await productModel.find({ [field]: [value] });
+
+        const result = await productModel.find({ [field]: { $regex: value, $options: 'i' } });
+
         res.status(200).send(result);
-    } catch {
-        res.status(500).send("Error retrieving products based on query.");
+    }
+    catch (err) {
+        res.status(500).send("Error retrieving products. Error: " + err);
     }
     finally {
         await disconnect();

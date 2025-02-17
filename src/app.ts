@@ -1,6 +1,6 @@
 // Imports
 import express, { Application, Request, Response } from "express";
-import bodyParser from "body-parser";
+//import bodyParser from "body-parser";
 import cors from "cors";
 import dotenvFlow from "dotenv-flow";
 
@@ -12,23 +12,26 @@ import { setupDocs } from "./util/docManager";
 dotenvFlow.config();
 const app: Application = express();
 
+
 /**
  *
  */
 export function startServer() {
 
+    app.use(express.json());
+
     // Repository connection test (database)
     testConnection();
     setupDocs(app);
 
-    app.use(bodyParser.json());
+    
 
     // kw 28-nov-2024 - init CORS before defining Routes
     setupCors();
 
     app.use("/api/", routes);
 
-    const PORT: number = parseInt(process.env.PORT as string, 10) || 4000;
+    const PORT: number = parseInt(process.env.PORT as string) || 4000;
     app.listen(PORT, function () {
         console.log("Server is running on port: " + PORT);
     });

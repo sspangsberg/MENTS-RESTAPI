@@ -1,13 +1,12 @@
 // imports
 import {
     type Request,
-    type Response,
-    type NextFunction
+    type Response
 } from "express";
 
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import Joi, { ValidationResult } from "joi";
+
 
 // Project imports
 import { userModel } from "../models/userModel";
@@ -23,13 +22,7 @@ import { connect, disconnect } from '../repository/database';
 export async function registerUser(req: Request, res: Response) {
 
     try {
-        // validate the user and password
-        const { error } = validateUserRegistrationInfo(req.body);
-
-        if (error) {
-            return res.status(400).json({ error: error.details[0].message });
-        }
-
+        
         await connect();
 
         // check if the email is already registered
@@ -53,8 +46,8 @@ export async function registerUser(req: Request, res: Response) {
         const savedUser = await userObject.save();
         res.status(200).json({ error: null, data: savedUser._id });
 
-    } catch {
-        res.status(500).send("Error registering user.");
+    } catch (error) {
+        res.status(500).send("Error registering user. Error:" + error);
     }
     finally {
         await disconnect();
@@ -70,14 +63,6 @@ export async function registerUser(req: Request, res: Response) {
 export async function loginUser(req: Request, res: Response) {
 
     try {
-
-        // validate user login inf
-        const { error } = validateUserLoginInfo(req.body);
-
-        if (error) {
-            return res.status(400).json({ error: error.details[0].message });
-        }
-
         await connect();
 
         // if login info is valid, find the user
@@ -128,64 +113,4 @@ export async function loginUser(req: Request, res: Response) {
     }
 };
 
-/**
- * Middleware logic to verify our token (JWT)
- * @param req 
- * @param res 
- * @param next 
- * @returns 
- */
-export function verifyToken(req: Request, res: Response, next: NextFunction) {
-    const token = req.header("auth-token");
 
-    if (!token) return res.status(400).json({ error: "Access Denied." });
-
-    try {
-        jwt.verify(token, process.env.TOKEN_SECRET as string);
-        next();
-    } catch {
-        res.status(401).send("Invalid Token.");
-    }
-};
-
-
-/*
-// logic to verify whether a refresh token and its corresponding email is valid
-const verifyRefresh = (email: string, refreshToken: string) => {
-        try {
-                const decoded = jwt.verify(refreshToken, process.env.TOKEN_SECRET as string);
-                return <any>decoded.email === email;
-        } catch (error) {
-                return false;
-        }
-}
-*/
-
-/**
- * Validating registration
- * @param data 
- * @returns 
- */
-export function validateUserRegistrationInfo(data: User): ValidationResult {
-    const schema = Joi.object({
-        name: Joi.string().min(6).max(255).required(),
-        email: Joi.string().min(6).max(255).required(),
-        password: Joi.string().min(6).max(255).required(),
-    });
-
-    return schema.validate(data);
-};
-
-/**
- * Validating login
- * @param data 
- * @returns 
- */
-export function validateUserLoginInfo(data: User): ValidationResult {
-    const schema = Joi.object({
-        email: Joi.string().min(6).max(255).required(),
-        password: Joi.string().min(6).max(255).required(),
-    });
-
-    return schema.validate(data);
-};
