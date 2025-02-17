@@ -6,7 +6,7 @@ import {
 
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-
+import Joi from "joi";
 
 // Project imports
 import { userModel } from "../models/userModel";
@@ -22,7 +22,7 @@ import { connect, disconnect } from '../repository/database';
 export async function registerUser(req: Request, res: Response) {
 
     try {
-        
+
         await connect();
 
         // check if the email is already registered
@@ -63,6 +63,20 @@ export async function registerUser(req: Request, res: Response) {
 export async function loginUser(req: Request, res: Response) {
 
     try {
+        const data = req.body;
+
+        const schema = Joi.object({
+            name: Joi.string().min(6).max(255).required(),
+            email: Joi.string().email().min(6).max(255).required(),
+            password: Joi.string().min(6).max(255).required(),
+        });
+
+        const { error } = schema.validate(data);
+
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+
         await connect();
 
         // if login info is valid, find the user

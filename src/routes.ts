@@ -134,7 +134,7 @@ router.post('/user/register', validateUserMiddleware, registerUser);
  *               password:
  *                 type: string
  */
-router.post('/user/login', validateUserMiddleware, loginUser);
+router.post('/user/login', loginUser);
 
 /**
  * @swagger
