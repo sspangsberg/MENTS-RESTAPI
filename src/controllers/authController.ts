@@ -110,7 +110,7 @@ export async function loginUser(req: Request, res: Response) {
             // TOKEN_SECRET,
             process.env.TOKEN_SECRET as string,
             // EXPIRATION
-            { expiresIn: "24h" } //process.env.JWT_EXPIRES_IN as string }
+            { expiresIn: process.env.JWT_EXPIRES_IN as string }
         );
 
         // attach auth token to header
