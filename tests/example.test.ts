@@ -5,6 +5,9 @@ test.describe("API workflow tests", () => {
         test.setTimeout(45000);
         const response = await request.get("/api/products");
         const result = await response.json();
+
+        console.log(result);
+
         expect(response.ok()).toBeTruthy();
         expect(response.status()).toBe(200);
     });
