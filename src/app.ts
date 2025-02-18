@@ -60,6 +60,3 @@ export function setupCors() {
         res.sendStatus(200);
     });
 }
-
-
-export default app;
