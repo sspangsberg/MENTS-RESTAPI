@@ -11,12 +11,7 @@ import {
     deleteProductById,
 } from './controllers/productController';
 
-// middlewares
-import { validateUserMiddleware, verifyTokenMiddleware } from './middlewares/authUserMiddleware';
-
-// controllers
-import { registerUser, loginUser } from './controllers/authController';
-
+import { registerUser, loginUser, verifyToken } from './controllers/authController';
 import { startCron, stopCron } from './controllers/devToolsController';
 
 const router: Router = Router();
@@ -100,7 +95,7 @@ router.get('/stop-cron', stopCron);
  *                 _id:
  *                   type: string
  */
-router.post('/user/register', validateUserMiddleware, registerUser);
+router.post('/user/register', registerUser);
 
 /**
  * @swagger
@@ -170,7 +165,7 @@ router.post('/user/login', loginUser);
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.post('/products', verifyTokenMiddleware, createProduct);
+router.post('/products', verifyToken, createProduct);
 
 /**
  * @swagger
@@ -304,7 +299,7 @@ router.get('/products/:id', getProductById);
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.put('/products/:id', verifyTokenMiddleware, updateProductById);
+router.put('/products/:id', verifyToken, updateProductById);
 
 /**
  * @swagger
@@ -332,6 +327,6 @@ router.put('/products/:id', verifyTokenMiddleware, updateProductById);
  *             schema:
  *               $ref: "#/components/schemas/Product"
  */
-router.delete('/products/:id', verifyTokenMiddleware, deleteProductById);
+router.delete('/products/:id', verifyToken, deleteProductById);
 
 export default router;

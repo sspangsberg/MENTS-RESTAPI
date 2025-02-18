@@ -1,6 +1,5 @@
 // Imports
 import express, { Application, Request, Response } from "express";
-import bodyParser from "body-parser";
 import cors from "cors";
 import dotenvFlow from "dotenv-flow";
 
@@ -18,13 +17,12 @@ const app: Application = express();
  */
 export function startServer() {
 
-    app.use(bodyParser.json());
+    app.use(express.json());
 
     // Repository connection test (database)
     testConnection();
     setupDocs(app);
 
-    
 
     // kw 28-nov-2024 - init CORS before defining Routes
     setupCors();
