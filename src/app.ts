@@ -23,7 +23,6 @@ export function startServer() {
     testConnection();
     setupDocs(app);
 
-
     // kw 28-nov-2024 - init CORS before defining Routes
     setupCors();
 
@@ -61,3 +60,6 @@ export function setupCors() {
         res.sendStatus(200);
     });
 }
+
+
+export default app;

@@ -6,6 +6,7 @@ import {
 } from "express";
 
 import jwt from "jsonwebtoken";
+
 import bcrypt from "bcrypt";
 import Joi, { ValidationResult } from "joi";
 
@@ -111,7 +112,7 @@ export async function loginUser(req: Request, res: Response) {
             // TOKEN_SECRET,
             process.env.TOKEN_SECRET as string,
             // EXPIRATION
-            { expiresIn: process.env.JWT_EXPIRES_IN }
+            { expiresIn: '2h' }
         );
 
         // attach auth token to header

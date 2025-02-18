@@ -19,5 +19,9 @@
     "skipLibCheck": true
   },
   "include": ["./src", "./src/swagger-output.json"],
-  "exclude": ["node_modules/**/*"]
+  "exclude": [
+    "./node_modules/", 
+    "./tests/", 
+    "./dist/"
+  ]
 }
