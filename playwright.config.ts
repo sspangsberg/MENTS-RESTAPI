@@ -33,7 +33,7 @@ export default defineConfig({
     /* Run your local dev server before starting the tests */
 
     webServer: {
-        command: "npm run localdb",
+        command: "npm run remotedb",
         url: "http://localhost:4000/api",
         reuseExistingServer: false,
     },
