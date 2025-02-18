@@ -108,9 +108,9 @@ export async function loginUser(req: Request, res: Response) {
                 id: userId,
             },
             // TOKEN_SECRET,
-            process.env.TOKEN_SECRET as string
+            process.env.TOKEN_SECRET as string,
             // EXPIRATION
-            //{ expiresIn: process.env.JWT_EXPIRES_IN as string }
+            { expiresIn: "24h" } //process.env.JWT_EXPIRES_IN as string }
         );
 
         // attach auth token to header
