@@ -1,6 +1,6 @@
 // Imports
 import express, { Application, Request, Response } from "express";
-//import bodyParser from "body-parser";
+import bodyParser from "body-parser";
 import cors from "cors";
 import dotenvFlow from "dotenv-flow";
 
@@ -18,7 +18,7 @@ const app: Application = express();
  */
 export function startServer() {
 
-    app.use(express.json());
+    app.use(bodyParser.json());
 
     // Repository connection test (database)
     testConnection();
