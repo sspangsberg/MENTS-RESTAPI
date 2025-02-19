@@ -100,9 +100,11 @@ export async function loginUser(req: Request, res: Response) {
             );
 
             // throw error if password is wrong
-            if (!validPassword)
+            if (!validPassword) {
                 res.status(400).json({ error: "Password is wrong. " });
-
+                return;
+            }
+                
             const userId: string = user.id;
 
             // create authentication token with username and id
