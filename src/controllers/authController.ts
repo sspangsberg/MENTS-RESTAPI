@@ -28,7 +28,8 @@ export async function registerUser(req: Request, res: Response) {
         const { error } = validateUserRegistrationInfo(req.body);
 
         if (error) {
-            return res.status(400).json({ error: error.details[0].message });
+            res.status(400).json({ error: error.details[0].message });
+            return;
         }
 
         await connect();
@@ -37,7 +38,8 @@ export async function registerUser(req: Request, res: Response) {
         const emailExist = await userModel.findOne({ email: req.body.email });
 
         if (emailExist) {
-            return res.status(400).json({ error: "Email already exists. " });
+            res.status(400).json({ error: "Email already exists. " });
+            return;
         }
 
         // has the password
@@ -76,7 +78,8 @@ export async function loginUser(req: Request, res: Response) {
         const { error } = validateUserLoginInfo(req.body);
 
         if (error) {
-            return res.status(400).json({ error: error.details[0].message });
+            res.status(400).json({ error: error.details[0].message });
+            return;
         }
 
         await connect();
@@ -86,40 +89,42 @@ export async function loginUser(req: Request, res: Response) {
 
         // throw error if email is wrong (user does not exist in DB)
         if (!user) {
-            return res.status(400).json({ error: "Email is wrong. " });
+            res.status(400).json({ error: "Email is wrong. " });
+            return;
         }
+        else {
+            // user exist - check for password correctness
+            const validPassword: boolean = await bcrypt.compare(
+                req.body.password,
+                user.password
+            );
 
-        // user exist - check for password correctness
-        const validPassword: boolean = await bcrypt.compare(
-            req.body.password,
-            user.password
-        );
+            // throw error if password is wrong
+            if (!validPassword)
+                res.status(400).json({ error: "Password is wrong. " });
 
-        // throw error if password is wrong
-        if (!validPassword)
-            return res.status(400).json({ error: "Password is wrong. " });
+            const userId: string = user.id;
 
-        const userId: string = user.id;
+            // create authentication token with username and id
+            const token: string = jwt.sign(
+                // payload
+                {
+                    name: user.name,
+                    email: user.email,
+                    id: userId,
+                },
+                // TOKEN_SECRET,
+                process.env.TOKEN_SECRET as string,
+                // EXPIRATION
+                { expiresIn: '2h' }
+            );
 
-        // create authentication token with username and id
-        const token: string = jwt.sign(
-            // payload
-            {
-                name: user.name,
-                email: user.email,
-                id: userId,
-            },
-            // TOKEN_SECRET,
-            process.env.TOKEN_SECRET as string,
-            // EXPIRATION
-            { expiresIn: '2h' }
-        );
-
-        // attach auth token to header
-        res.header("auth-token", token).json({
-            error: null,
-            data: { userId, token },
-        });
+            // attach auth token to header
+            res.header("auth-token", token).json({
+                error: null,
+                data: { userId, token },
+            });
+        }
     }
     catch {
         res.status(500).send("Error logging in user.");
@@ -139,11 +144,18 @@ export async function loginUser(req: Request, res: Response) {
 export function verifyToken(req: Request, res: Response, next: NextFunction) {
     const token = req.header("auth-token");
 
-    if (!token) return res.status(400).json({ error: "Access Denied." });
+    if (!token) {
+        res.status(400).json({ error: "Access Denied." });
+        return;
+    }
+        
 
     try {
-        jwt.verify(token, process.env.TOKEN_SECRET as string);
+        if (token)
+            jwt.verify(token, process.env.TOKEN_SECRET as string);
+        
         next();
+        
     } catch {
         res.status(401).send("Invalid Token.");
     }
@@ -170,7 +182,7 @@ const verifyRefresh = (email: string, refreshToken: string) => {
 export function validateUserRegistrationInfo(data: User): ValidationResult {
     const schema = Joi.object({
         name: Joi.string().min(6).max(255).required(),
-        email: Joi.string().min(6).max(255).required(),
+        email: Joi.string().email().min(6).max(255).required(),
         password: Joi.string().min(6).max(255).required(),
     });
 
@@ -184,7 +196,7 @@ export function validateUserRegistrationInfo(data: User): ValidationResult {
  */
 export function validateUserLoginInfo(data: User): ValidationResult {
     const schema = Joi.object({
-        email: Joi.string().min(6).max(255).required(),
+        email: Joi.string().email().min(6).max(255).required(),
         password: Joi.string().min(6).max(255).required(),
     });
 
