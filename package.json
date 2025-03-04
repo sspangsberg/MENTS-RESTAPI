@@ -47,6 +47,8 @@
         "yamljs": "^0.3.0"
     },
     "devDependencies": {
+        "@faker-js/faker": "^9.5.1",
+        "@playwright/test": "^1.44.1",
         "@types/bcrypt": "^5.0.2",
         "@types/cors": "^2.8.17",
         "@types/express": "^5.0.0",
@@ -59,7 +61,6 @@
         "@typescript-eslint/eslint-plugin": "^8.17.0",
         "@typescript-eslint/parser": "^8.17.0",
         "ts-node": "^10.9.2",
-        "typescript": "^5.4.5",
-        "@playwright/test": "^1.44.1"
+        "typescript": "^5.4.5"
     }
 }
