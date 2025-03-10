@@ -1,6 +1,6 @@
 import {
-  type Request,
-  type Response
+    type Request,
+    type Response
 } from "express";
 
 import cron from "node-cron";
@@ -17,20 +17,20 @@ const URL = "https://ments-restapi.onrender.com/api/docs/";
  */
 const task = cron.schedule(cronPattern, () => {
 
-  /**
+    /**
    * 
    */
-  https.get(URL, () => {
-    console.log('Pinged the server');
-    durationMinutes = durationMinutes - MINUTES_DELTA;
-    console.log("Minutes Left: ", durationMinutes);
+    https.get(URL, () => {
+        console.log('Pinged the server');
+        durationMinutes = durationMinutes - MINUTES_DELTA;
+        console.log("Minutes Left: ", durationMinutes);
 
-    if (durationMinutes <= 0) {
-      task.stop();
-      console.log('Stopped the cron job due to inactivity');
-      durationMinutes = 120;
-    }
-  });
+        if (durationMinutes <= 0) {
+            task.stop();
+            console.log('Stopped the cron job due to inactivity');
+            durationMinutes = 120;
+        }
+    });
 });
 
 /**
@@ -40,13 +40,13 @@ const task = cron.schedule(cronPattern, () => {
  */
 export async function startCron(req: Request, res: Response) {
 
-  try {
-    task.start();
+    try {
+        task.start();
 
-    res.status(200).send("Started cron-job from active route call");
-  } catch (error) {
-    res.status(500).send({ message: error });
-  }
+        res.status(200).send("Started cron-job from active route call");
+    } catch (error) {
+        res.status(500).send({ message: error });
+    }
 };
 
 
@@ -56,12 +56,12 @@ export async function startCron(req: Request, res: Response) {
  * @param res 
  */
 export async function stopCron(req: Request, res: Response) {
-  try {
+    try {
 
-    task.stop();
+        task.stop();
 
-    res.status(200).send("Stopped the cron-job from active route call");
-  } catch (error) {
-    res.status(500).send({ message: error });
-  }
+        res.status(200).send("Stopped the cron-job from active route call");
+    } catch (error) {
+        res.status(500).send({ message: error });
+    }
 };

@@ -10,7 +10,8 @@
         "seed-remote": "cross-env NODE_ENV=remote npx ts-node ./src/util/dbSeeder.ts",
         "build": "rm -rf dist/ && tsc",
         "test": "npx playwright test --reporter=list",
-        "report": "npx playwright test --reporter=html && npx playwright show-report"
+        "report": "npx playwright test --reporter=html && npx playwright show-report",
+        "lint": "npx eslint"
     },
     "nodemonConfig": {
         "verbose": false,
@@ -47,8 +48,10 @@
         "yamljs": "^0.3.0"
     },
     "devDependencies": {
+        "@eslint/js": "^9.21.0",
         "@faker-js/faker": "^9.5.1",
         "@playwright/test": "^1.44.1",
+        "@stylistic/eslint-plugin": "^4.2.0",
         "@types/bcrypt": "^5.0.2",
         "@types/cors": "^2.8.17",
         "@types/express": "^5.0.0",
@@ -60,7 +63,9 @@
         "@types/yamljs": "^0.2.34",
         "@typescript-eslint/eslint-plugin": "^8.17.0",
         "@typescript-eslint/parser": "^8.17.0",
+        "eslint": "^9.21.0",
         "ts-node": "^10.9.2",
-        "typescript": "^5.4.5"
+        "typescript": "^5.4.5",
+        "typescript-eslint": "^8.26.0"
     }
 }

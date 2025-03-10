@@ -61,19 +61,19 @@ export async function seedData() {
     // Generate fake product
     for (let index = 0; index < 10; index++) {
         await new productModel
-            (
-                {
-                    name: faker.commerce.productName(),
-                    description: faker.commerce.productDescription(),
-                    imageURL: "https://picsum.photos/500/500",
-                    price: faker.commerce.price({ min: 5, max: 5000 }),
-                    stock: faker.number.int({ min: 0, max: 200 }),
-                    isOnDiscount: faker.datatype.boolean(0.50),
-                    discountPct: faker.number.int({ min: 0, max: 100 }),
-                    isHidden: false,
-                    _createdBy: user1.id
-                }
-            ).save();
+        (
+            {
+                name: faker.commerce.productName(),
+                description: faker.commerce.productDescription(),
+                imageURL: "https://picsum.photos/500/500",
+                price: faker.commerce.price({ min: 5, max: 5000 }),
+                stock: faker.number.int({ min: 0, max: 200 }),
+                isOnDiscount: faker.datatype.boolean(0.50),
+                discountPct: faker.number.int({ min: 0, max: 100 }),
+                isHidden: false,
+                _createdBy: user1.id
+            }
+        ).save();
     }
 
     console.log("Seeded data successfully...");
