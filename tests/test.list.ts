@@ -1,12 +1,19 @@
 process.env.NODE_ENV = 'test';
 
 import { test } from '@playwright/test';
-import myFirstTest from './example.test';
+
+// Test Collections
+import userTestCollection from './user.test';
+import productTestCollection from './product.test';
+import health from './health.test';
+
+// Project imports
 import { userModel } from "../src/models/userModel";
 import { connect, disconnect } from '../src/repository/database';
-import dotenvFlow from "dotenv-flow";
 
+import dotenvFlow from "dotenv-flow";
 dotenvFlow.config();
+
 
 function setup() {
     test.beforeAll(async () => {
@@ -31,8 +38,8 @@ function setup() {
     });
 }
 
-
 setup();
 
-
-test.describe(myFirstTest);
+test.describe(health);
+test.describe(userTestCollection);
+test.describe(productTestCollection);

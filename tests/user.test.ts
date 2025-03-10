@@ -1,30 +1,7 @@
 import { test, expect } from "@playwright/test";
 
-export default function myFirstTest() {
-    test("To get all products", async ({ request }) => {
-
-        const response = await request.get("/api/products");
-        const result = await response.json();
-
-        //console.log(result);
-
-        expect(response.ok()).toBeTruthy();
-        expect(result).toHaveLength(0);
-        expect(response.status()).toBe(200);
-    });
-
-    test("Health check", async ({ request }) => {
-
-        const response = await request.get("/api/");
-        const result = await response.json();
-
-        //console.log(result);
-
-        expect(response.ok()).toBeTruthy();
-        expect(response.status()).toBe(200);
-    });
-
-
+export default function userTestCollection() {
+    
     test("Valid user registration info (Joi)", async ({ request }) => {
 
         // 1) Register new user with valid inputs
@@ -39,8 +16,6 @@ export default function myFirstTest() {
         // Asserts
         expect(response.status()).toBe(200);
     });
-
-
 
     test("Invalid user registration info (Joi)", async ({ request }) => {
 
@@ -58,5 +33,4 @@ export default function myFirstTest() {
         //expect(response.body).toBe.a('object');
         //   expect(res.body.error).to.be.equal("\"password\" length must be at least 6 characters long");  
     });
-
 };
