@@ -6,7 +6,7 @@ export default function myFirstTest() {
         const response = await request.get("/api/products");
         const result = await response.json();
 
-        console.log(result);
+        //console.log(result);
 
         expect(response.ok()).toBeTruthy();
         expect(result).toHaveLength(0);
