@@ -4,6 +4,7 @@
     "description": "MongoDB-ExpressJS-NodeJS TS REST API",
     "main": "index.js",
     "scripts": {
+        "start-dev": "cross-env NODE_ENV=development nodemon",
         "testdb": "cross-env NODE_ENV=test npx ts-node ./src/index.ts",
         "seed": "cross-env NODE_ENV=development npx ts-node ./src/util/dataSeeder.ts",
         "build": "rm -rf dist/ && tsc",

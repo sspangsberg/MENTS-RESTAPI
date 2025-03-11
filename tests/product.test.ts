@@ -2,12 +2,16 @@ import { test, expect } from "@playwright/test";
 
 export default function productTestCollection() {
 
-
+    /**
+     * 
+     */
     test("Workflow - register, login, create product and verify", async ({ request }) => {
 
         test.setTimeout(10_000);
 
-        // 1) Register new user with valid inputs
+        //------------------------------------------------------------------------------
+        // Create test objects
+        //------------------------------------------------------------------------------
         const userReg = {
             name: "Lars Larsen",
             email: "mail@larsen.com",
@@ -19,7 +23,9 @@ export default function productTestCollection() {
             password: "12345678"
         }
 
+        //------------------------------------------------------------------------------
         // Register user
+        //------------------------------------------------------------------------------
         let response = await request.post("/api/user/register", { data: userReg });
         let json = await response.json();
 
@@ -30,7 +36,9 @@ export default function productTestCollection() {
         expect(response.status()).toBe(200);
 
 
+        //------------------------------------------------------------------------------
         // Login user
+        //------------------------------------------------------------------------------
         response = await request.post("/api/user/login", { data: userLogin });
         json = await response.json();
 
@@ -40,7 +48,9 @@ export default function productTestCollection() {
 
 
 
+        //------------------------------------------------------------------------------
         // Create product
+        //------------------------------------------------------------------------------
         const expectedProduct =
         {
             "name": "Mr. Burns statue",
@@ -63,8 +73,11 @@ export default function productTestCollection() {
 
         expect(response.status()).toBe(201);
 
-        
+
+
+        //------------------------------------------------------------------------------
         // Verify we have one product in the test repository
+        //------------------------------------------------------------------------------
         response = await request.get("/api/products/");
         json = await response.json();
         const receivedProduct = json[0];
