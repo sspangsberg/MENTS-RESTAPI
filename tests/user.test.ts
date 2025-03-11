@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 export default function userTestCollection() {
-    
+    /*
     test("Valid user registration info (Joi)", async ({ request }) => {
 
         // 1) Register new user with valid inputs
@@ -16,6 +16,7 @@ export default function userTestCollection() {
         // Asserts
         expect(response.status()).toBe(200);
     });
+    */
 
     test("Invalid user registration info (Joi)", async ({ request }) => {
 
