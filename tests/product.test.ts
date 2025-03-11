@@ -5,6 +5,8 @@ export default function productTestCollection() {
 
     test("Workflow - register, login, create product and verify", async ({ request }) => {
 
+        test.setTimeout(10_000);
+
         // 1) Register new user with valid inputs
         const userReg = {
             name: "Lars Larsen",
@@ -61,7 +63,7 @@ export default function productTestCollection() {
 
         expect(response.status()).toBe(201);
 
-        /*
+        
         // Verify we have one product in the test repository
         response = await request.get("/api/products/");
         json = await response.json();
@@ -73,6 +75,6 @@ export default function productTestCollection() {
         expect(receivedProduct.description).toEqual(expectedProduct.description);
 
         expect(json).toHaveLength(1);
-        */
+        
     });
 }
