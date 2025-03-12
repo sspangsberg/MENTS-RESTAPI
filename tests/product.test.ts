@@ -82,7 +82,7 @@ export default function productTestCollection() {
         json = await response.json();
         const receivedProduct = json[0];
 
-        console.log(json)
+        //console.log(json) // output receivedProduct
         // verify product data
         expect(receivedProduct.name).toEqual(expectedProduct.name);
         expect(receivedProduct.description).toEqual(expectedProduct.description);

@@ -17,7 +17,7 @@ dotenvFlow.config();
 
 
 function setup() {
-    test.beforeAll(async () => {
+    test.beforeEach(async () => {
 
         try {
             await connect();
