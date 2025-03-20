@@ -11,7 +11,7 @@
         "test": "npx playwright test --reporter=list",
         "report": "npx playwright test --reporter=html && npx playwright show-report",
         "lint": "npx eslint"
-    },
+    },  
     "nodemonConfig": {
         "verbose": false,
         "watch": [
