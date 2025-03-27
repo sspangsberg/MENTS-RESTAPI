@@ -12,7 +12,7 @@ import {
 } from './controllers/productController';
 
 import { registerUser, loginUser, verifyToken } from './controllers/authController';
-import { startCron, stopCron } from './controllers/devToolsController';
+import { startCron } from './controllers/devToolsController';
 
 const router: Router = Router();
 
@@ -49,24 +49,6 @@ router.get('/', (req: Request, res: Response) => {
  *               type: array               
  */
 router.get('/start-cron', startCron);
-
-/**
- * @swagger
- * /stop-cron:
- *   get:
- *     tags:
- *       - Stops Cron Jobs
- *     summary: Stops the cron job that keep render alive
- *     description: Stops the cron job that keep render alive
- *     responses:
- *       200:
- *         description: Response from the cron job
- *         content:
- *           application/json:
- *             schema:
- *               type: array               
- */
-router.get('/stop-cron', stopCron);
 
 /**
  * @swagger
