@@ -33,6 +33,17 @@ function stopPingingServer() {
 }
 
 /**
+ * Stop and clear any scheduled tasks
+ */
+function cleanUpTasks() {
+    // Clean up any existing tasks
+    for (const task of cron.getTasks().values()) {
+        task.stop();
+    }
+    cron.getTasks().clear();
+}
+
+/**
    * 
    * @param req 
    * @param res 
@@ -40,11 +51,7 @@ function stopPingingServer() {
 export async function startCron(req: Request, res: Response) {
 
     try {
-        // Clean up any existing tasks
-        for (const task of cron.getTasks().values()) {
-            task.stop();
-        }
-        cron.getTasks().clear();
+        cleanUpTasks();
 
         const cronPattern = "*/" + MINUTES_DELTA + " * * * *";
         // Docs here: https://crontab.guru/#*/5_*_*_*_*
@@ -60,7 +67,7 @@ export async function startCron(req: Request, res: Response) {
         res.status(200).send("Started background task (duration:" + totalDuration + " mins)");
 
     } catch (error) {
-        console.log("Error:" + error);
+        console.log("Error:" + error); // Debug info
         res.status(500).send(error);
     }
 };
