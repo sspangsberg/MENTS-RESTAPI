@@ -34,21 +34,24 @@ router.get('/', (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /start-cron:
+ * /start-cron/{duration}:
  *   get:
  *     tags:
  *       - Start Cron Jobs
  *     summary: Starts the cron job that keep render alive
- *     description: Starts the cron job that keep render alive
+ *     description: N/A
+ *     parameters:
+*       - in: path
+*         name: duration
+*         required: true
+*         description: The total duration to keep the remote server alive in minutes
+*         schema:
+*           type: number
  *     responses:
  *       200:
- *         description: Response from the cron job
- *         content:
- *           application/json:
- *             schema:
- *               type: array               
+ *         description: Response from the cron job           
  */
-router.get('/start-cron', startCron);
+router.get('/start-cron/:duration', startCron);
 
 /**
  * @swagger
