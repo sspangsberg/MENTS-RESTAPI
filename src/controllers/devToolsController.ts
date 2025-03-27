@@ -8,7 +8,7 @@ import https from "https";
 
 // Settings
 const MINUTES_DELTA = 1;
-const URL = "https://ments-api-kex4.onrender.com/api/";
+const URL = "https://ments-restapi.onrender.com/api/";
 let counter = 0;
 let task: ScheduledTask;
 
@@ -58,7 +58,7 @@ export async function startCron(req: Request, res: Response) {
         setTimeout(stopPingingServer, totalDuration * 60 * 1000);
 
         res.status(200).send("Started background task (duration:" + totalDuration + " mins)");
-        
+
     } catch (error) {
         res.status(500).send(error);
     }
