@@ -60,6 +60,7 @@ export async function startCron(req: Request, res: Response) {
         res.status(200).send("Started background task (duration:" + totalDuration + " mins)");
 
     } catch (error) {
+        console.log("Error:" + error);
         res.status(500).send(error);
     }
 };
