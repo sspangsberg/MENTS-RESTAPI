@@ -44,9 +44,6 @@ jobs:
         run: |
           npm install
           npm test
-        env:
-          DBHOST: ${{ secrets.DBHOST }}
-          TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
 
   # Heavily modified deploy job to fit render.com
   deploy:
