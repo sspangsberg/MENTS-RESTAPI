@@ -2,13 +2,13 @@ import { Router, Request, Response } from 'express';
 
 // Project imports
 import {
-    createProduct,
-    getAllProducts,
-    getProductById,
-    getProductsInStock,
-    getProductsByQuery,
-    updateProductById,
-    deleteProductById,
+  createProduct,
+  getAllProducts,
+  getProductById,
+  getProductsInStock,
+  getProductsByQuery,
+  updateProductById,
+  deleteProductById,
 } from './controllers/productController';
 
 import { registerUser, loginUser, verifyToken } from './controllers/authController';
@@ -29,7 +29,7 @@ const router: Router = Router();
  *         description: Server up and running.
  */
 router.get('/', (req: Request, res: Response) => {
-    res.status(200).send({ message: 'Welcome to the TypeScript MEN REST-API' });
+  res.status(200).send({ message: 'Welcome to the TypeScript MEN REST-API' });
 })
 
 
@@ -42,12 +42,12 @@ router.get('/', (req: Request, res: Response) => {
  *     summary: Starts the cron job that keep render alive
  *     description: N/A
  *     parameters:
-*       - in: path
-*         name: duration
-*         required: true
-*         description: The total duration to keep the remote server alive in minutes
-*         schema:
-*           type: number
+ *       - in: path
+ *         name: duration
+ *         required: true
+ *         description: The total duration to keep the remote server alive in minutes
+ *         schema:
+ *           type: number
  *     responses:
  *       200:
  *         description: Response from the cron job           
