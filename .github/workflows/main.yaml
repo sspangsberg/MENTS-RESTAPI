@@ -13,7 +13,7 @@ jobs:
       max-parallel: 1
       matrix:
         node-version: [20.x, 22.x]
-        mongodb-version: ['6.0','7.0','8.0']
+        mongodb-version: ['8.0']
 
     steps:
       - name: Checkout
@@ -26,11 +26,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      # Spin up MongoDB Docker instance in GitHub Actions
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.12.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
 
+      # Create .env file (get rid of dotenv-flow errors)
       - name: Create .env file
         run: |
             touch .env
