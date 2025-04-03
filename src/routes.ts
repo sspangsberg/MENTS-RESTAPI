@@ -29,8 +29,9 @@ const router: Router = Router();
  *         description: Server up and running.
  */
 router.get('/', (req: Request, res: Response) => {
-    res.status(200).send({ message: 'Welcome to the TypeScript MEN REST-API' });
+    res.status(200).send({ message: 'Welcome to the TypeScript MEN REST-API with changes' });
 })
+
 
 /**
  * @swagger
