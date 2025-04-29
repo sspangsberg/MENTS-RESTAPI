@@ -84,7 +84,7 @@ export default function productTestCollection() {
 
     //console.log(json) // output receivedProduct
     // verify product data
-    expect(receivedProduct.name).toEqual("Invalid name");//expectedProduct.name);
+    expect(receivedProduct.name).toEqual(expectedProduct.name);
     expect(receivedProduct.description).toEqual(expectedProduct.description);
 
     expect(json).toHaveLength(1);
