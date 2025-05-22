@@ -26,14 +26,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Spin up MongoDB Docker instance in GitHub Actions
-      - name: Start MongoDB
+      
+      - name: Who am I #1
         uses: supercharge/mongodb-github-action@1.12.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
 
-      # Create .env file (get rid of dotenv-flow errors)
-      - name: Create .env file
+      
+      - name: Who am I #2
         run: |
           touch .env
           echo "${{secrets.API}}" >> .env
